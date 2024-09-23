@@ -18,6 +18,7 @@ import * as SQLite from "expo-sqlite";
 import { useFinances } from "../context/FinancesContext";
 import { Transaction } from "../types/transaction";
 import { Keyboard } from "react-native";
+import { parseFromBRL } from "../utils/utils";
 
 const TransactionModal = () => {
   const [name, setName] = useState("");
@@ -33,15 +34,16 @@ const TransactionModal = () => {
   } = useFinances();
 
   const handleAddTransaction = async () => {
+    console.log(parseFromBRL(amount));
     const db = SQLite.openDatabaseSync("transactions");
-    if (isNaN(Number(amount))) {
-      Alert.alert("Por favor, insira um valor numérico válido.");
+    if (!name || !amount) {
+      Alert.alert("Erro", "Preencha todos os campos");
       return;
     }
     const transaction: Transaction = {
       id: Date.now(),
       label: name,
-      value: Number(amount),
+      value: parseFromBRL(amount),
       date: date.toISOString(),
       type: category === "Entrada" ? 1 : 2,
     };
@@ -95,14 +97,20 @@ const TransactionModal = () => {
           />
           <TextInput
             style={styles.input}
-            placeholder="Valor"
-            keyboardType="numbers-and-punctuation"
+            placeholder="R$ 0,00"
+            keyboardType="number-pad"
             value={amount}
             onFocus={() => {
               TextInput.State.currentlyFocusedInput() &&
                 TextInput.State.currentlyFocusedInput().focus();
             }}
-            onChangeText={setAmount}
+            onChangeText={(text) => {
+              const formattedAmount = text
+                .replace(/\D/g, "")
+                .replace(/(\d)(\d{2})$/, "$1,$2")
+                .replace(/(?=(\d{3})+(\D))\B/g, ".");
+              setAmount(formattedAmount);
+            }}
           />
           <Pressable
             onPress={() => setShowDatePicker(true)}
