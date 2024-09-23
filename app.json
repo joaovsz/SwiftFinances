@@ -1,14 +1,13 @@
 {
   "expo": {
+    
     "name": "SwiftFinances",
     "slug": "SwiftFinances",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,20 +16,31 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "fonts": ["WorkSans-Bold.ttf", "WorkSans-Regular.ttf", 
+          "WorkSans-SemiBold.ttf", "WorkSans-Medium.ttf", "WorkSans-Light.ttf", "WorkSans-ExtraBold.ttf"]
+        }
+      ]
+      
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dc5cba70-92cc-46e8-86a1-2ab64f4bcf2f"
+      }
     }
   }
 }

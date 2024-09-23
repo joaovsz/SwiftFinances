@@ -5,15 +5,17 @@ import tw from "twrnc";
 export default function HeaderUser() {
   return (
     <View
-      style={tw`flex-row items-center gap-2  p-4 bg-[#323232] rounded-full`}
+      className={`flex-row items-center gap-2  p-4 bg-[#101010] rounded-full`}
     >
       <Image
-        style={tw`w-10 rounded-full h-10`}
+        className={`w-10 rounded-full h-10`}
         source={require("../assets/Perfil.jpg")}
       />
-      <View style={tw`flex-row`}>
-        <Text style={tw`font-bold text-[18px] text-white`}>Olá, </Text>
-        <Text style={tw`font-bold text-[18px] text-white`}>João Vitor!</Text>
+      <View className={`flex-row`}>
+        <Text className={`font-outfit-bold text-[18px] text-white`}>Olá, </Text>
+        <Text className={`font-outfit-bold text-[18px] text-white`}>
+          João Vitor!
+        </Text>
       </View>
     </View>
   );
