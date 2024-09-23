@@ -1,6 +1,5 @@
 {
   "expo": {
-    
     "name": "SwiftFinances",
     "slug": "SwiftFinances",
     "version": "1.0.0",
@@ -17,7 +16,8 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.joaovsz.swiftfinances"
     },
     "web": {
       "bundler": "metro",
@@ -26,13 +26,7 @@
     "plugins": [
       "expo-router",
       [
-        "expo-font",
-        {
-          "fonts": ["WorkSans-Bold.ttf", "WorkSans-Regular.ttf", 
-          "WorkSans-SemiBold.ttf", "WorkSans-Medium.ttf", "WorkSans-Light.ttf", "WorkSans-ExtraBold.ttf"]
-        }
-      ]
-      
+        "expo-font"      ]
     ],
     "experiments": {
       "typedRoutes": true
