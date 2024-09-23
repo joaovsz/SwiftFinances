@@ -17,6 +17,7 @@ import tw from "twrnc";
 import * as SQLite from "expo-sqlite";
 import { useFinances } from "../context/FinancesContext";
 import { Transaction } from "../types/transaction";
+import { Keyboard } from "react-native";
 
 const TransactionModal = () => {
   const [name, setName] = useState("");
@@ -81,6 +82,11 @@ const TransactionModal = () => {
           </Button>
           <Text style={styles.title}>Adicionar Transação</Text>
           <TextInput
+            autoFocus
+            onFocus={() => {
+              TextInput.State.currentlyFocusedInput() &&
+                TextInput.State.currentlyFocusedInput().focus();
+            }}
             style={styles.input}
             placeholder="Nome"
             value={name}
@@ -92,6 +98,10 @@ const TransactionModal = () => {
             placeholder="Valor"
             keyboardType="numbers-and-punctuation"
             value={amount}
+            onFocus={() => {
+              TextInput.State.currentlyFocusedInput() &&
+                TextInput.State.currentlyFocusedInput().focus();
+            }}
             onChangeText={setAmount}
           />
           <Pressable

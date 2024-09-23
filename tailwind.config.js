@@ -1,6 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-
-import fontFamily from "./src/types/fontFamily"
 module.exports = {
   content: ["./src/**/*.{ts,tsx}"],
   presets: [require("nativewind/preset")],
