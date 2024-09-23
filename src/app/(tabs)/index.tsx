@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#1E1E1E",
+        backgroundColor: "#151515",
         flex: 1,
       }}
     >
@@ -30,7 +30,7 @@ export default function Home() {
       <View className={`h-auto w-full py-4 gap-4 px-3 `}>
         <HeaderUser />
         <Text
-          className={`text-white font-outfit-light font-outfit-medium text-[20px] text-left pl-6 `}
+          className={`text-white  font-outfit-medium text-[20px] text-left pl-2`}
         >
           Resumo
         </Text>
