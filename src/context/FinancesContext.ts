@@ -1,5 +1,5 @@
 import { createContext, Dispatch, useContext } from "react";
-import { Transaction } from "../types/transaction";
+import { Transaction } from "../models/transaction";
 
 export type State = {
   reloaded: boolean;

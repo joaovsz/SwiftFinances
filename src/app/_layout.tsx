@@ -1,17 +1,21 @@
-import { SplashScreen, Stack } from "expo-router";
-import React, { useEffect, useState } from "react";
+import "../global.css";
+
 import {
-  useFonts,
   Outfit_300Light,
   Outfit_400Regular,
   Outfit_500Medium,
   Outfit_600SemiBold,
   Outfit_700Bold,
   Outfit_800ExtraBold,
+  useFonts,
 } from "@expo-google-fonts/outfit";
-import "../global.css";
+import { SplashScreen, Stack } from "expo-router";
+import React, { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
+
 import { FinancesProvider } from "../context/FinancesProvider";
-import { StyleSheet } from "nativewind";
+import { ThemeContextProvider } from "../context/ThemeContext";
+import { AuthProvider } from "../context/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,22 +35,29 @@ export default function HomeLayout() {
   }, [fontsLoaded]);
 
   return (
-    <FinancesProvider>
-      <Stack
-        initialRouteName="/(tabs)"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          name="(tabs)"
-          options={{
+    <ThemeContextProvider>
+      <AuthProvider>
+
+      <FinancesProvider>
+        <Stack
+          initialRouteName="/(tabs)"
+          screenOptions={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen name="Login" />
-        <Stack.Screen name="Signup" />
-      </Stack>
-    </FinancesProvider>
+        >
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen name="Login" />
+          <Stack.Screen name="Signup" />
+        </Stack>
+        <Toast />
+      </FinancesProvider>
+      </AuthProvider>
+
+    </ThemeContextProvider>
   );
 }

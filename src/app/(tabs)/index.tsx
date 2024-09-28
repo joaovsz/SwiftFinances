@@ -22,12 +22,13 @@ export default function Home() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#151515",
+        backgroundColor: "#323232",
         flex: 1,
       }}
     >
       {<TransactionModal />}
-      <View className={`h-auto w-full py-4 gap-4 px-3 `}>
+      <View className={`h-[85%] w-full py-4 gap-4 px-3 `}>
+        {/* 72px */}
         <HeaderUser />
         <Text
           className={`text-white  font-outfit-medium text-[20px] text-left pl-2`}
@@ -39,52 +40,55 @@ export default function Home() {
           showsHorizontalScrollIndicator={false}
           style={{
             flexDirection: "row",
-            height: 150,
+            height: 90,
           }}
           className={`flex-row gap-4 h-[150px]`}
         >
           <View
-            className={`p-4 rounded-2xl bg-[#101010] w-[320px] mr-4 gap-4 justify-evenly `}
+            className={`p-4 bg-[#101010] w-[320px] items-left h-full justify-around rounded-2xl mr-4`}
           >
-            <View className={`flex flex-row gap-4 items-center `}>
-              <IncomeIcon />
-              <Text className={`text-white font-outfit-regular flex-1 text-xl`}>
-                Entradas
+            <View className={`flex flex-row gap-2 w-1/2 items-center`}>
+              <TotalIcon />
+              <Text className={`text-[#fff] font-outfit-regular text-2xl`}>
+                Saldo
               </Text>
             </View>
-            <Text className={`text-white font-outfit-bold text-3xl`}>
-              {formatToBRL(incomes)}
+            <Text
+              className={`text-green-700 text-left font-outfit-semibold text-3xl w-full`}
+            >
+              {formatToBRL(totalAmount)}
             </Text>
           </View>
-          <View className={`gap-4 h-full `}>
+
+          <View className={`gap-4 h-full`} style={{ height: 90 }}>
             <View
-              className={`p-4 bg-[#101010]  flex flex-row items-center justify-between h-[66px] rounded-2xl mr-4`}
+              className={`p-4 bg-[#101010] w-[320px]  flex flex-row items-center justify-between h-[73px] rounded-2xl mr-4`}
             >
-              <View className={`flex flex-row gap-2 items-center`}>
-                <ExpensesIcon />
-                <Text className={`text-[#fff] text-xl font-outfit-regular`}>
-                  Saídas
-                </Text>
-              </View>
-              <Text className={`text-[#FE0000] font-outfit-semibold text-xl`}>
-                - {formatToBRL(expenses)}
-              </Text>
-            </View>
-            <View
-              className={`p-4 bg-[#101010] w-[320px] flex flex-row items-center justify-between h-[66px] rounded-2xl mr-4`}
-            >
-              <View className={`flex flex-row gap-2 items-center`}>
-                <TotalIcon />
-                <Text
-                  className={`text-[#fff] font-outfit-regular w-1/2 text-xl`}
-                >
-                  Saldo
+              <View className={`flex flex-row w-1/2 gap-2 items-center`}>
+                <IncomeIcon />
+                <Text className={`text-[#ddd1d1] text-xl font-outfit-regular`}>
+                  Entradas
                 </Text>
               </View>
               <Text
-                className={`text-green-700 font-outfit-semibold text-xl w-1/2`}
+                className={`text-[#fff] font-outfit-semibold w-1/2 text-right text-xl`}
               >
-                {formatToBRL(totalAmount)}
+                {formatToBRL(incomes)}
+              </Text>
+            </View>
+            <View
+              className={`p-4 bg-[#101010] w-[320px] flex flex-row items-center justify-between h-[73px] rounded-2xl mr-4`}
+            >
+              <View className={`flex flex-row w-1/2 gap-2 items-center`}>
+                <ExpensesIcon />
+                <Text className={`text-[#ddd1d1] text-xl font-outfit-regular`}>
+                  Saídas
+                </Text>
+              </View>
+              <Text
+                className={`text-[#FE0000] font-outfit-semibold w-1/2 text-right text-xl`}
+              >
+                - {formatToBRL(expenses)}
               </Text>
             </View>
           </View>
@@ -97,16 +101,6 @@ export default function Home() {
           >
             Transações
           </Text>
-          {/* <Button
-            className={`rounded-[32px] w-1/2 h-fit bg-[#80AF81]`}
-          >
-            <View className={`flex flex-row justify-center items-center `}>
-              <PlusCircleIcon size={20} color={"#fff"} />
-              <Text className={`text-white text-center ml-2 font-outfit-medium`}>
-                Incluir Transação
-              </Text>
-            </View>
-          </Button> */}
         </View>
         <Lista />
       </View>

@@ -5,7 +5,7 @@ import tw from "twrnc";
 export default function HeaderUser() {
   return (
     <View
-      className={`flex-row items-center gap-2  p-4 bg-[#101010] rounded-full`}
+      className={`flex-row items-center gap-2 p-4 bg-[#101010] rounded-full`}
     >
       <Image
         className={`w-10 rounded-full h-10`}

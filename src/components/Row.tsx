@@ -4,7 +4,7 @@ import tw from "twrnc";
 import { formatToBRL } from "../utils/utils";
 import MinusIcon from "./icons/MinusIcon";
 import { useFinances } from "../context/FinancesContext";
-import { Transaction } from "../types/transaction";
+import { Transaction } from "../models/transaction";
 
 interface RowProps {
   title: string;
@@ -34,7 +34,7 @@ const Row: React.FC<RowProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`p-4 border border-gray-700 rounded-2xl my-2 bg-[#101010]`}
+      className={`p-4 border border-gray-700 rounded-2xl my-1 bg-[#101010]`}
     >
       <View className={`flex-row items-center gap-2`}>
         <Text className={`text-[16px] flex-1 font-outfit-light text-white`}>

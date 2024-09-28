@@ -9,8 +9,11 @@ import {
   ArrowLeftEndOnRectangleIcon,
   ArrowLeftIcon,
 } from "react-native-heroicons/outline";
+import { router } from "expo-router";
+import { useTheme } from "@/src/context/ThemeContext";
 
 export default function Profile() {
+  const { theme } = useTheme();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -27,9 +30,8 @@ export default function Profile() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#1E1E1E",
+        backgroundColor: theme.colors.background,
         flex: 1,
-        height: "100%",
       }}
     >
       <View className={`w-full items-center justify-center`}>
@@ -59,13 +61,15 @@ export default function Profile() {
         )}
       </View>
       <Pressable
-        onPress={() => Alert.alert("Logout")}
-        className={`w-[200px] border border-red-400 rounded-lg p-4 mt-8 mx-auto flex flex-row items-center justify-center`}
+        onPress={() => router.replace("/Login")}
+        className={`w-[200px] border border-red-400 rounded-lg p-2 mt-8 mx-auto flex flex-row items-center justify-center`}
       >
-        <ArrowLeftEndOnRectangleIcon size={28} className={`text-red-400`} />
-        <Text className={`text-red-500 w-[80%] text-center `}>
-          Fazer Logout
-        </Text>
+        <ArrowLeftEndOnRectangleIcon
+          size={28}
+          color={"#ef4444"}
+          className={`text-red-400 w-1/3`}
+        />
+        <Text className={`text-red-500 w-2/3 text-center `}>Fazer Logout</Text>
       </Pressable>
     </SafeAreaView>
   );

@@ -9,6 +9,7 @@ export default function Lista() {
 
   return (
     <FlatList
+      scrollEnabled={true}
       data={state.transaction}
       ListEmptyComponent={() => (
         <View className={`flex-1 justify-center items-center p-4`}>
@@ -27,7 +28,7 @@ export default function Lista() {
         />
       )}
       keyExtractor={(item) => item.id.toString()}
-      className={` rounded-2xl `}
+      className={`h-[30%] rounded-2xl`}
     />
   );
 }

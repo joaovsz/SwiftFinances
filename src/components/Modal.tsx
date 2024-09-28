@@ -1,24 +1,13 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
-import React, { useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { PlusCircleIcon, XMarkIcon } from "react-native-heroicons/outline";
-import { Button } from "react-native-paper";
-import tw from "twrnc";
-import * as SQLite from "expo-sqlite";
-import { useFinances } from "../context/FinancesContext";
-import { Transaction } from "../types/transaction";
-import { Keyboard } from "react-native";
-import { parseFromBRL } from "../utils/utils";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as SQLite from 'expo-sqlite';
+import React, { useState } from 'react';
+import { Alert, KeyboardAvoidingView, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { PlusCircleIcon, XMarkIcon } from 'react-native-heroicons/outline';
+import { Button } from 'react-native-paper';
+
+import { useFinances } from '../context/FinancesContext';
+import { Transaction } from '../models/transaction';
+import { parseFromBRL } from '../utils/utils';
 
 const TransactionModal = () => {
   const [name, setName] = useState("");

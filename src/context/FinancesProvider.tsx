@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { Transaction } from "../types/transaction";
+import { Transaction } from "../models/transaction";
 import FinancesContext, {
   FinancesContextType,
   State,
@@ -22,7 +22,9 @@ export const FinancesProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const createDB = async () => {
       try {
-        const db = await SQLite.openDatabaseAsync("transactions");
+        const db = await SQLite.openDatabaseAsync("transactions", {
+          useNewConnection: true,
+        });
         await db.execAsync(`
           CREATE TABLE IF NOT EXISTS transactions
           (id INTEGER PRIMARY KEY NOT NULL, label TEXT NOT NULL, value REAL NOT NULL, 
@@ -67,7 +69,9 @@ export const FinancesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const removeTransaction = async (id: number) => {
-    const db = await SQLite.openDatabaseAsync("transactions");
+    const db = await SQLite.openDatabaseAsync("transactions", {
+      useNewConnection: true,
+    });
     await db.execAsync(`DELETE FROM transactions WHERE id = ${id}`);
     setState((prev) => ({
       ...prev,
