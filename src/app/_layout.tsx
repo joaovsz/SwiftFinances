@@ -37,27 +37,25 @@ export default function HomeLayout() {
   return (
     <ThemeContextProvider>
       <AuthProvider>
-
-      <FinancesProvider>
-        <Stack
-          initialRouteName="/(tabs)"
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen
-            name="(tabs)"
-            options={{
+        <FinancesProvider>
+          <Stack
+            initialRouteName="/(tabs)"
+            screenOptions={{
               headerShown: false,
             }}
-          />
-          <Stack.Screen name="Login" />
-          <Stack.Screen name="Signup" />
-        </Stack>
-        <Toast />
-      </FinancesProvider>
+          >
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name="Login" />
+            <Stack.Screen name="Signup" />
+          </Stack>
+          <Toast />
+        </FinancesProvider>
       </AuthProvider>
-
     </ThemeContextProvider>
   );
 }

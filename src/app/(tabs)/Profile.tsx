@@ -1,32 +1,72 @@
 import { View, Image, Text, Pressable, Alert } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
-import { TouchableOpacity } from "react-native";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState } from "react";
 import tw from "twrnc";
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowLeftIcon,
+  UserIcon,
 } from "react-native-heroicons/outline";
 import { router } from "expo-router";
 import { useTheme } from "@/src/context/ThemeContext";
+import { logout } from "@/firebase/Services/authService";
+import { useAuth } from "@/src/context/AuthContext";
+import { getAuth, updateProfile } from "firebase/auth";
 
 export default function Profile() {
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  useEffect(() => {
+    console.log(user?.photoURL);
+  }, []);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      const { uri } = result.assets[0];
+      setSelectedImage(uri);
+      return uri;
+    }
+    return null;
+  };
+
+  const uploadProfileImage = async () => {
+    try {
+      const imageUri = await pickImage();
+      if (!imageUri) {
+        throw new Error("Nenhuma imagem selecionada");
+      }
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+      const storage = getStorage();
+      const imageRef = ref(storage, `profilePictures/${user.uid}`);
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      await uploadBytes(imageRef, blob);
+      const downloadURL = await getDownloadURL(imageRef);
+
+      await updateProfile(user, {
+        photoURL: downloadURL,
+      });
+
+      console.log("Imagem de perfil atualizada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao fazer upload da imagem de perfil:", error);
     }
   };
+
   return (
     <SafeAreaView
       style={{
@@ -35,10 +75,19 @@ export default function Profile() {
       }}
     >
       <View className={`w-full items-center justify-center`}>
-        <Image
-          className={`w-28 rounded-full h-28`}
-          source={require("../../assets/Perfil.jpg")}
-        />
+        {user && user.photoURL ? (
+          <Image
+            source={{ uri: user.photoURL }}
+            className={`w-28 rounded-full h-28`}
+          />
+        ) : (
+          <View
+            className={`w-28 h-28 rounded-full bg-gray-300 flex items-center justify-center`}
+          >
+            <UserIcon size={56} color={"#9ca3af"} />
+          </View>
+        )}
+
         <Text className={`w-full text-center p-2 text-xl text-white`}>
           João Vitor Souza
         </Text>
@@ -61,7 +110,24 @@ export default function Profile() {
         )}
       </View>
       <Pressable
-        onPress={() => router.replace("/Login")}
+        onPress={() => {
+          Alert.alert("Logout", "Deseja realmente sair?", [
+            {
+              text: "Cancelar",
+              style: "cancel",
+            },
+            {
+              text: "Sair",
+              onPress: async () => {
+                try {
+                  await logout();
+                } catch {
+                  Alert.alert("Erro", "Erro ao fazer logout");
+                }
+              },
+            },
+          ]);
+        }}
         className={`w-[200px] border border-red-400 rounded-lg p-2 mt-8 mx-auto flex flex-row items-center justify-center`}
       >
         <ArrowLeftEndOnRectangleIcon
