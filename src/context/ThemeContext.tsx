@@ -70,18 +70,18 @@ export const ThemeContextProvider: React.FC<ThemeProviderProps> = ({
   const theme = useMemo(() => (isDark ? darkTheme : lightTheme), [isDark]);
 
   return (
-      <PaperProvider theme={theme}>
-        <ThemeContext.Provider
-          value={{
-            theme,
-            themeType,
-            toggleTheme: toggleThemetype,
-            isDark,
-            setThemeType,
-          }}
-        >
-          {children}
-        </ThemeContext.Provider>
-      </PaperProvider>
+    <PaperProvider theme={theme}>
+      <ThemeContext.Provider
+        value={{
+          theme,
+          themeType,
+          toggleTheme: toggleThemetype,
+          isDark,
+          setThemeType,
+        }}
+      >
+        {children}
+      </ThemeContext.Provider>
+    </PaperProvider>
   );
 };

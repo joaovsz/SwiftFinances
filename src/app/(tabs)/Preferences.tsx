@@ -13,7 +13,7 @@ export default function Preferences() {
         flex: 1,
       }}
     >
-      <Text>Em breve</Text>
+      <Text className=" font-outfit-medium">Em breve</Text>
     </SafeAreaView>
   );
 }

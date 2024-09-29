@@ -56,6 +56,7 @@ export default function Signup() {
           label={"Email"}
           placeholder={"Digite seu email"}
           mode={"outlined"}
+          className="font-outfit-regular"
           textColor="#fff"
           style={{ backgroundColor: "#1E1E1E" }}
           keyboardType="email-address"
@@ -66,6 +67,7 @@ export default function Signup() {
           label={"Nome Completo"}
           placeholder={"Digite seu nome completo"}
           mode={"outlined"}
+          className="font-outfit-regular"
           textColor="#fff"
           style={{ backgroundColor: "#1E1E1E" }}
           value={fullName}
@@ -75,6 +77,7 @@ export default function Signup() {
           label={"Nome de usuário"}
           placeholder={"Digite um nome de usuário"}
           mode={"outlined"}
+          className="font-outfit-regular"
           textColor="#fff"
           style={{ backgroundColor: "#1E1E1E" }}
           value={username}
@@ -83,6 +86,7 @@ export default function Signup() {
         <TextInput
           label={"Informe uma senha"}
           placeholder={"Senha"}
+          className="font-outfit-regular"
           mode={"outlined"}
           textColor="#fff"
           style={{ backgroundColor: "#1E1E1E" }}
@@ -93,6 +97,7 @@ export default function Signup() {
         <TextInput
           label={"Digite novamente"}
           placeholder={"Senha"}
+          className="font-outfit-regular"
           mode={"outlined"}
           textColor="#fff"
           style={{ backgroundColor: "#1E1E1E" }}

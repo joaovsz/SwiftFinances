@@ -2,6 +2,8 @@ import { doc, DocumentData, setDoc, WithFieldValue } from "firebase/firestore";
 
 import { Usuario } from "../../src/models/User";
 import { db } from "@/firebaseConfig";
+import { getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
   collectionName: string,
@@ -44,5 +46,29 @@ export const addUsuario = async (
   } catch (error) {
     console.error("Erro ao adicionar usuario:", error);
     throw new Error("Erro ao adicionar usuario" + error);
+  }
+};
+
+export const getUsuarioById = async (): Promise<Usuario | null> => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      throw new Error("Usuário não está logado");
+    }
+
+    const docRef = doc(db, "usuarios", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data() as Usuario;
+    } else {
+      console.log("Nenhum documento encontrado!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Erro ao buscar usuário:", error);
+    throw new Error("Erro ao buscar usuário" + error);
   }
 };

@@ -24,9 +24,24 @@
       "output": "static"
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-font"      ]
+      "expo-router", ["expo-font"],
+        ["expo-camera",
+          {
+            "cameraPermission": "Permitir SwiftFinances acessar sua câmera?",
+            "microphonePermission": "Permitir SwiftFinances acessar seu microfone?",
+            "recordAudioAndroid": true
+          }
+        ],
+        [
+          "expo-image-picker",
+          {
+            "permission": "Permitir SwiftFinances acessar sua galeria de fotos?",
+            "ios": {
+              "NSPhotoLibraryUsageDescription": "Permitir SwiftFinances acessar sua galeria de fotos?"
+            }
+          }
+        ]        
+            
     ],
     "experiments": {
       "typedRoutes": true

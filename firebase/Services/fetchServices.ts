@@ -17,3 +17,4 @@ const fetchCollection = async <T>(collectionName: string): Promise<T[]> => {
     return [];
   }
 };
+

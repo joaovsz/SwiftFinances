@@ -35,6 +35,7 @@ export default function Login() {
         </Text>
         <TextInput
           label={"Email"}
+          className="font-outfit-regular"
           placeholder={"Digite seu email"}
           mode={"outlined"}
           textColor="#fff"
@@ -48,6 +49,7 @@ export default function Login() {
           placeholder={"Senha"}
           mode={"outlined"}
           textColor="#fff"
+          className="font-outfit-regular"
           style={{ backgroundColor: "#1E1E1E" }}
           secureTextEntry
           value={password}

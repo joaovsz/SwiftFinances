@@ -1,13 +1,27 @@
-import DateTimePicker from '@react-native-community/datetimepicker';
-import * as SQLite from 'expo-sqlite';
-import React, { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { PlusCircleIcon, XMarkIcon } from 'react-native-heroicons/outline';
-import { Button } from 'react-native-paper';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import * as SQLite from "expo-sqlite";
+import React, { useState } from "react";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { TextInput } from "react-native-paper";
+import {
+  ChatBubbleBottomCenterIcon,
+  CurrencyDollarIcon,
+  PlusCircleIcon,
+  XMarkIcon,
+} from "react-native-heroicons/outline";
+import { Button } from "react-native-paper";
 
-import { useFinances } from '../context/FinancesContext';
-import { Transaction } from '../models/transaction';
-import { parseFromBRL } from '../utils/utils';
+import { useFinances } from "../context/FinancesContext";
+import { Transaction } from "../models/transaction";
+import { parseFromBRL } from "../utils/utils";
 
 const TransactionModal = () => {
   const [name, setName] = useState("");
@@ -61,56 +75,76 @@ const TransactionModal = () => {
       transparent={true}
       animationType="slide"
     >
-      <View style={styles.modalContainer}>
-        <KeyboardAvoidingView style={styles.modalContent}>
+      <View
+        style={{
+          backgroundColor: "rgba(0,0,0,0.7)",
+        }}
+        className="flex-1 justify-center items-center "
+      >
+        <KeyboardAvoidingView className="bg-[#292929]  p-6 rounded-xl w-11/12">
           <Button
             onPress={() => setOpenAddTransactionModal(false)}
-            className={`rounded-[8px] absolute right-0 top-2  bg-transparent flex-1 z-10`}
+            className="rounded-lg absolute right-0 top-2 bg-transparent z-10"
           >
-            <View className={`flex flex-row justify-center w-full`}>
-              <XMarkIcon size={25} color={"#000"} />
+            <View className="flex flex-row justify-center w-full">
+              <XMarkIcon size={25} color={"#fff"} />
             </View>
           </Button>
-          <Text style={styles.title}>Adicionar Transação</Text>
-          <TextInput
-            autoFocus
-            onFocus={() => {
-              TextInput.State.currentlyFocusedInput() &&
-                TextInput.State.currentlyFocusedInput().focus();
-            }}
-            style={styles.input}
-            placeholder="Nome"
-            value={name}
-            keyboardType="default"
-            onChangeText={setName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="R$ 0,00"
-            keyboardType="number-pad"
-            value={amount}
-            onFocus={() => {
-              TextInput.State.currentlyFocusedInput() &&
-                TextInput.State.currentlyFocusedInput().focus();
-            }}
-            onChangeText={(text) => {
-              const formattedAmount = text
-                .replace(/\D/g, "")
-                .replace(/(\d)(\d{2})$/, "$1,$2")
-                .replace(/(?=(\d{3})+(\D))\B/g, ".");
-              setAmount(formattedAmount);
-            }}
-          />
+          <Text className="text-xl text-white mb-4 font-outfit-bold">
+            Adicionar Transação
+          </Text>
+          <View className="  mb-4">
+            <TextInput
+              style={{ height: 35 }}
+              mode={"outlined"}
+              theme={{ colors: { primary: "#fff" } }}
+              label="Nome"
+              value={name}
+              onChangeText={setName}
+              left={
+                <TextInput.Icon
+                  icon={() => (
+                    <ChatBubbleBottomCenterIcon size={20} color={"#fff"} />
+                  )}
+                />
+              }
+            />
+            <TextInput
+              label="Valor"
+              value={amount}
+              mode={"outlined"}
+              textColor="#fff"
+              theme={{ colors: { primary: "#fff" } }}
+              onChangeText={(text) => {
+                const formattedAmount = text
+                  .replace(/\D/g, "")
+                  .replace(/(\d)(\d{2})$/, "$1,$2")
+                  .replace(/(?=(\d{3})+(\D))\B/g, ".");
+                setAmount(formattedAmount);
+              }}
+              style={{ height: 35 }}
+              keyboardType="number-pad"
+              className=""
+              left={
+                <TextInput.Icon
+                  icon={() => <CurrencyDollarIcon size={20} color={"#fff"} />}
+                />
+              }
+            />
+          </View>
+
           <Pressable
             onPress={() => setShowDatePicker(true)}
-            style={styles.datePicker}
+            className="mb-4 p-3 border border-gray-300 rounded-lg"
           >
-            <Text>{date.toDateString()}</Text>
+            <Text>{date.toLocaleDateString("pt-BR")}</Text>
           </Pressable>
           {showDatePicker && (
             <DateTimePicker
               value={date}
               mode="date"
+              textColor="white"
+              themeVariant="dark"
               display="default"
               locale="pt-BR"
               onChange={(event, selectedDate) => {
@@ -122,35 +156,31 @@ const TransactionModal = () => {
             />
           )}
 
-          <View style={styles.categoryContainer}>
+          <View className="flex-row justify-between mb-4">
             <Pressable
-              style={[
-                styles.categoryButton,
-                category === "Entrada" && styles.selectedCategory,
-              ]}
+              className={`flex-1 p-3 border border-gray-300 rounded-lg mr-2 ${
+                category === "Entrada" ? "bg-blue-100" : "text-white"
+              }`}
               onPress={() => setCategory("Entrada")}
             >
-              <Text className={`w-full text-center`}>Entrada</Text>
+              <Text className="text-center">Entrada</Text>
             </Pressable>
             <Pressable
-              style={[
-                styles.categoryButton,
-                category === "Saída" && styles.selectedCategory,
-              ]}
+              className={`flex-1 p-3 border border-gray-300 rounded-lg ${
+                category === "Saída" ? "bg-blue-100 text-white" : "text-white"
+              }`}
               onPress={() => setCategory("Saída")}
             >
-              <Text className={`w-full text-center`}>Saída</Text>
+              <Text className="text-center">Saída</Text>
             </Pressable>
           </View>
           <Pressable
             onPress={handleAddTransaction}
-            className={`py-2 w-full rounded-[12px] items-center justify-center flex flex-row border border-green-500 bg-green-100 `}
+            className="py-2 w-full rounded-lg items-center justify-center flex flex-row border border-green-500 bg-green-100"
           >
-            <View className={`flex-row w-full items-center justify-center  `}>
+            <View className="flex-row w-full items-center justify-center">
               <PlusCircleIcon size={20} color={"#000"} />
-              <Text
-                className={`text-black w-[80px] text-center font-outfit-medium`}
-              >
+              <Text className="text-black w-20 text-center font-medium">
                 Incluir
               </Text>
             </View>
@@ -160,78 +190,5 @@ const TransactionModal = () => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "85%",
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 20,
-    width: "100%",
-    textAlign: "left",
-  },
-  input: {
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  datePicker: {
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  categoryContainer: {
-    flexDirection: "row",
-
-    justifyContent: "space-between",
-    width: "100%",
-    marginBottom: 20,
-  },
-  categoryButton: {
-    flex: 1,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    alignItems: "center",
-    marginHorizontal: 5,
-  },
-  selectedCategory: {
-    backgroundColor: "#c6c6c6",
-    flex: 1,
-    width: "100%",
-  },
-  addButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#007BFF",
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  addButtonText: {
-    color: "white",
-    marginLeft: 10,
-  },
-});
 
 export default TransactionModal;

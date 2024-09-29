@@ -4,24 +4,28 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState } from "react";
-import tw from "twrnc";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowLeftIcon,
   UserIcon,
 } from "react-native-heroicons/outline";
-import { router } from "expo-router";
 import { useTheme } from "@/src/context/ThemeContext";
 import { logout } from "@/firebase/Services/authService";
 import { useAuth } from "@/src/context/AuthContext";
 import { getAuth, updateProfile } from "firebase/auth";
+import { Button, TouchableRipple } from "react-native-paper";
+import { getUsuarioById } from "@/firebase/Services/createServices";
 
 export default function Profile() {
   const { theme } = useTheme();
-  const { user } = useAuth();
+  const { user: userAuthenticated, userData } = useAuth();
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [permission, requestPermission] = useCameraPermissions();
   useEffect(() => {
-    console.log(user?.photoURL);
+    Alert.alert(JSON.stringify(userData));
   }, []);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,13 +42,20 @@ export default function Profile() {
     }
     return null;
   };
+  useEffect(() => {
+    if (selectedImage) uploadProfileImage();
+  }, [selectedImage]);
 
   const uploadProfileImage = async () => {
     try {
-      const imageUri = await pickImage();
+      let imageUri: string | null | undefined = selectedImage;
+      if (imageUri === null) {
+        imageUri = selectedImage;
+      }
       if (!imageUri) {
         throw new Error("Nenhuma imagem selecionada");
       }
+
       const auth = getAuth();
       const user = auth.currentUser;
       if (!user) {
@@ -67,6 +78,32 @@ export default function Profile() {
     }
   };
 
+  const takePhoto = async () => {
+    if (!permission?.granted) {
+      const { status } = await requestPermission();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permissão necessária",
+          "Precisamos da sua permissão para acessar a câmera"
+        );
+        return;
+      }
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const { uri } = result.assets[0];
+      setSelectedImage(uri);
+      return uri;
+    }
+    return null;
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -75,10 +112,15 @@ export default function Profile() {
       }}
     >
       <View className={`w-full items-center justify-center`}>
-        {user && user.photoURL ? (
+        {userAuthenticated && userAuthenticated.photoURL ? (
           <Image
-            source={{ uri: user.photoURL }}
+            source={{ uri: userAuthenticated.photoURL }}
             className={`w-28 rounded-full h-28`}
+          />
+        ) : selectedImage ? (
+          <Image
+            source={{ uri: selectedImage }}
+            className={`w-28 rounded-full h-28 mt-4`}
           />
         ) : (
           <View
@@ -88,26 +130,41 @@ export default function Profile() {
           </View>
         )}
 
-        <Text className={`w-full text-center p-2 text-xl text-white`}>
-          João Vitor Souza
+        <Text
+          className={`w-full text-center p-2 text-xl text-white font-outfit-regular`}
+        >
+          {" "}
+          {userData?.name}
         </Text>
-        <Text className={`w-full text-center text-[#c6c6c6]`}>
-          joaovitor1713coin@gmail.com
+        <Text
+          className={`w-full text-center text-[#c6c6c6] font-outfit-regular my-3`}
+        >
+          {userData?.email}
         </Text>
-        <View className={`w-full flex flex-row items-center justify-center`}>
-          <Pressable onPress={pickImage} className={`mt-4 mx-auto w-1/2 `}>
-            <Text className={`text-green-500 text-center`}>
-              Alterar foto de perfil
-            </Text>
-          </Pressable>
+        <View className="flex flex-row mt-4 w-full justify-center gap-4">
+          <View
+            className={` flex flex-row items-center justify-center w-1/3 border border-green-400 p-1 rounded-lg`}
+          >
+            <TouchableRipple onPress={takePhoto} className={``}>
+              <Text
+                className={`text-green-500 text-center font-outfit-regular `}
+              >
+                Tirar foto
+              </Text>
+            </TouchableRipple>
+          </View>
+          <View
+            className={`rounded-lg  border-green-400 p-1 flex flex-row items-center justify-center w-1/3 border`}
+          >
+            <TouchableRipple onPress={pickImage} className={`w-full`}>
+              <Text
+                className={`text-green-500 w-full text-center font-outfit-regular`}
+              >
+                Carregar uma foto
+              </Text>
+            </TouchableRipple>
+          </View>
         </View>
-
-        {selectedImage && (
-          <Image
-            source={{ uri: selectedImage }}
-            className={`w-28 rounded-full h-28 mt-4`}
-          />
-        )}
       </View>
       <Pressable
         onPress={() => {
@@ -135,7 +192,9 @@ export default function Profile() {
           color={"#ef4444"}
           className={`text-red-400 w-1/3`}
         />
-        <Text className={`text-red-500 w-2/3 text-center `}>Fazer Logout</Text>
+        <Text className={`text-red-500 w-2/3 text-center font-outfit-regular`}>
+          Fazer Logout
+        </Text>
       </Pressable>
     </SafeAreaView>
   );
