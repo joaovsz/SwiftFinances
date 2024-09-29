@@ -23,6 +23,12 @@ export const AuthProvider = ({ children }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    Storage.getItem({ key: "auth" }).then((res) => {
+      if (res) {
+        setUser(JSON.parse(res));
+      }
+      setLoading(false);
+    });
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
