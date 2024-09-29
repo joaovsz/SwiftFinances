@@ -12,7 +12,7 @@ export default function Settings() {
       <View className="w-full mt-24">
         <View className="flex-row items-center justify-between px-4 py-2">
           <Text
-            className={`text-lg color-[${
+            className={`text-lg text-[${
               isDark ? "#fff" : "#000"
             }] font-outfit-regular`}
           >

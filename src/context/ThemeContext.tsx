@@ -27,8 +27,9 @@ const darkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
-    background: "#333",
+    background: "#000",
     text: "#fff",
+    primary: "#80AF81",
   },
 };
 export type Theme = typeof lightTheme;

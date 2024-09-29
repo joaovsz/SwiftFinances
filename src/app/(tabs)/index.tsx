@@ -10,11 +10,12 @@ import React, { useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Lista from "@/src/components/Lista";
+import { useTheme } from "@/src/context/ThemeContext";
 
 export default function Home() {
   const { totalAmount, state, incomes, expenses, calculateIncomes } =
     useFinances();
-
+  const { theme } = useTheme();
   useEffect(() => {
     calculateIncomes(state.totalIncomes);
   }, []);
@@ -22,7 +23,7 @@ export default function Home() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#323232",
+        backgroundColor: `${theme.colors.background}`,
         flex: 1,
       }}
     >
@@ -31,7 +32,7 @@ export default function Home() {
         {/* 72px */}
         <HeaderUser />
         <Text
-          className={`text-white  font-outfit-medium text-[20px] text-left pl-2`}
+          className={`${theme.colors.text}  font-outfit-medium text-[20px] text-left pl-2`}
         >
           Resumo
         </Text>
@@ -42,12 +43,14 @@ export default function Home() {
             flexDirection: "row",
             height: 90,
           }}
-          className={`flex-row gap-4 h-[150px]`}
+          className={`flex-row gap-4 max-h-[150px]`}
         >
           <View
             className={`p-4 bg-[#101010] w-[320px] items-left h-full justify-around rounded-2xl mr-4`}
           >
-            <View className={`flex flex-row gap-2 w-1/2 items-center`}>
+            <View
+              className={`flex flex-row gap-2 w-1/2 items-center max-h-[150px]`}
+            >
               <TotalIcon />
               <Text className={`text-[#fff] font-outfit-regular text-2xl`}>
                 Saldo
@@ -62,7 +65,7 @@ export default function Home() {
 
           <View className={`gap-4 h-full`} style={{ height: 90 }}>
             <View
-              className={`p-4 bg-[#101010] w-[320px]  flex flex-row items-center justify-between h-[73px] rounded-2xl mr-4`}
+              className={`p-4 bg-[#101010] w-[320px]  flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4`}
             >
               <View className={`flex flex-row w-1/2 gap-2 items-center`}>
                 <IncomeIcon />
@@ -77,7 +80,7 @@ export default function Home() {
               </Text>
             </View>
             <View
-              className={`p-4 bg-[#101010] w-[320px] flex flex-row items-center justify-between h-[73px] rounded-2xl mr-4`}
+              className={`p-4 bg-[#101010] w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4`}
             >
               <View className={`flex flex-row w-1/2 gap-2 items-center`}>
                 <ExpensesIcon />
@@ -97,7 +100,7 @@ export default function Home() {
           className={`flex flex-row items-center justify-between w-full mt-4`}
         >
           <Text
-            className={`text-white text-[20px] font-outfit-bold w-1/2 text-left pl-2`}
+            className={`${theme.colors.background} text-[20px] font-outfit-bold w-1/2 text-left pl-2`}
           >
             Transações
           </Text>

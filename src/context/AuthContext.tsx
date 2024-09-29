@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@/firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React from "react";
+import Storage from "expo-storage";
 import { Usuario } from "../models/User";
 import { getUsuarioById } from "@/firebase/Services/createServices";
 interface AuthContextType {
@@ -25,10 +26,17 @@ export const AuthProvider = ({ children }: any) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
+      user
+        ? Storage.setItem({
+            key: `auth`,
+            value: JSON.stringify(user),
+          })
+        : Storage.removeItem({ key: "auth" });
     });
 
     return unsubscribe;
   }, []);
+
   useEffect(() => {
     const getLoggedUser = async () => {
       const res = await getUsuarioById();
@@ -36,6 +44,7 @@ export const AuthProvider = ({ children }: any) => {
     };
     user && getLoggedUser();
   }, [user]);
+
   return (
     <AuthContext.Provider
       value={{

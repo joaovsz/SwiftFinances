@@ -22,8 +22,10 @@ import { Button } from "react-native-paper";
 import { useFinances } from "../context/FinancesContext";
 import { Transaction } from "../models/transaction";
 import { parseFromBRL } from "../utils/utils";
+import { useTheme } from "../context/ThemeContext";
 
 const TransactionModal = () => {
+  const { theme } = useTheme();
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState(new Date());
@@ -81,7 +83,7 @@ const TransactionModal = () => {
         }}
         className="flex-1 justify-center items-center "
       >
-        <KeyboardAvoidingView className="bg-[#292929]  p-6 rounded-xl w-11/12">
+        <KeyboardAvoidingView className={`bg-[#101010] p-6 rounded-xl w-11/12`}>
           <Button
             onPress={() => setOpenAddTransactionModal(false)}
             className="rounded-lg absolute right-0 top-2 bg-transparent z-10"
@@ -104,7 +106,10 @@ const TransactionModal = () => {
               left={
                 <TextInput.Icon
                   icon={() => (
-                    <ChatBubbleBottomCenterIcon size={20} color={"#fff"} />
+                    <ChatBubbleBottomCenterIcon
+                      size={20}
+                      color={`${theme.colors.text}`}
+                    />
                   )}
                 />
               }
@@ -127,7 +132,12 @@ const TransactionModal = () => {
               className=""
               left={
                 <TextInput.Icon
-                  icon={() => <CurrencyDollarIcon size={20} color={"#fff"} />}
+                  icon={() => (
+                    <CurrencyDollarIcon
+                      size={20}
+                      color={`${theme.colors.text}`}
+                    />
+                  )}
                 />
               }
             />
@@ -147,6 +157,7 @@ const TransactionModal = () => {
               themeVariant="dark"
               display="default"
               locale="pt-BR"
+              className="text-white"
               onChange={(event, selectedDate) => {
                 setShowDatePicker(false);
                 if (selectedDate) {

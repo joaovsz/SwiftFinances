@@ -8,16 +8,46 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { login } from "@/firebase/Services/authService";
 
+import { Modal } from "react-native";
+import { Button } from "react-native-paper";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
+import Toast from "react-native-toast-message";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
+  const handleForgetPassword = async () => {
+    setModalVisible(true);
+  };
   const handleLogin = async () => {
     try {
       await login(email, password);
       router.replace("/(tabs)");
     } catch (error: any) {
-      Alert.alert("Login Failed", error.message);
+      Toast.show({
+        type: "error",
+        text1: (error as Error).message,
+      });
+    }
+  };
+  const handleSendResetEmail = async () => {
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      Toast.show({
+        type: "success",
+        text1: "Email enviado com sucesso",
+        text2: "Verifique sua caixa de entrada",
+      });
+      setModalVisible(false);
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: (error as Error).message,
+      });
     }
   };
 
@@ -55,9 +85,11 @@ export default function Login() {
           value={password}
           onChangeText={setPassword}
         />
-        <Text className="text-white text-right font-outfit-bold">
-          Esqueceu sua senha?
-        </Text>
+        <Pressable onPress={handleForgetPassword}>
+          <Text className="text-white text-right font-outfit-bold">
+            Esqueci minha senha
+          </Text>
+        </Pressable>
         <Pressable
           className="bg-green-500 p-4 rounded-2xl"
           onPress={handleLogin}
@@ -78,6 +110,56 @@ export default function Login() {
           </Text>
         </View>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "rgba(0,0,0,0.7)",
+          }}
+          className="w-full h-full "
+        >
+          <View className="m-5 bg-white rounded-2xl p-9 top-[30%] shadow-lg">
+            <Text className="text-black text-center mb-2 font-outfit-semibold text-2xl">
+              Redefinir Senha
+            </Text>
+            <TextInput
+              label={"Email"}
+              className="font-outfit-regular"
+              placeholder={"Digite seu email"}
+              mode={"outlined"}
+              textColor="#000"
+              style={{ backgroundColor: "#fff", width: "100%" }}
+              keyboardType="email-address"
+              value={resetEmail}
+              onChangeText={setResetEmail}
+            />
+            <View className="flex-row mt-4 justify-between w-full">
+              <Button
+                onPress={() => setModalVisible(false)}
+                mode="text"
+                textColor="rgb(22 163 74)"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onPress={handleSendResetEmail}
+                mode="contained"
+                buttonColor="rgb(22 163 74)"
+                textColor="white"
+              >
+                Enviar
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

@@ -34,7 +34,7 @@ const Row: React.FC<RowProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`p-4 border border-gray-700 rounded-2xl my-1 bg-[#101010]`}
+      className={`p-4  rounded-3xl my-1 bg-[#3f3f3f]`}
     >
       <View className={`flex-row items-center gap-2`}>
         <Text className={`text-[16px] flex-1 font-outfit-light text-white`}>

@@ -56,7 +56,7 @@ export default function TabLayout() {
           }}
         />
         <Tab.Screen
-          name="Preferences"
+          name="Preferências"
           component={Preferences}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
@@ -90,7 +90,7 @@ export default function TabLayout() {
           }}
         />
         <Tab.Screen
-          name="Profile"
+          name="Meu Perfil"
           component={Profile}
           options={{
             tabBarIcon: ({ color, size }) => (

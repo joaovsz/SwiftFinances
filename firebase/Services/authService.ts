@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import Storage from "expo-storage";
 import { Usuario } from "../../src/models/User";
 import { addUsuario } from "./createServices";
 import { doc, getDoc } from "firebase/firestore";
@@ -51,6 +52,7 @@ export const getUsuarioData = async (uid: string): Promise<Usuario | null> => {
 export const logout = async (): Promise<void> => {
   try {
     await signOut(auth);
+    Storage.removeItem({ key: "auth" });
   } catch (error) {
     throw new Error((error as Error).message);
   }

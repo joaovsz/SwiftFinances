@@ -1,52 +1,31 @@
-import { View, Image, Text, Pressable, Alert } from "react-native";
-import React, { useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import * as ImagePicker from "expo-image-picker";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useState } from "react";
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-
-import {
-  ArrowLeftEndOnRectangleIcon,
-  ArrowLeftIcon,
-  UserIcon,
-} from "react-native-heroicons/outline";
-import { useTheme } from "@/src/context/ThemeContext";
-import { logout } from "@/firebase/Services/authService";
-import { useAuth } from "@/src/context/AuthContext";
-import { getAuth, updateProfile } from "firebase/auth";
-import { Button, TouchableRipple } from "react-native-paper";
-import { getUsuarioById } from "@/firebase/Services/createServices";
+import { logout } from '@/firebase/Services/authService';
+import { useAuth } from '@/src/context/AuthContext';
+import { useTheme } from '@/src/context/ThemeContext';
+import { useCameraPermissions } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { Alert, Image, Pressable, Text, View } from 'react-native';
+import { ArrowLeftEndOnRectangleIcon, UserIcon } from 'react-native-heroicons/outline';
+import { TouchableRipple } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   const { user: userAuthenticated, userData } = useAuth();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
-  useEffect(() => {
-    Alert.alert(JSON.stringify(userData));
-  }, []);
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
 
-    if (!result.canceled) {
-      const { uri } = result.assets[0];
-      setSelectedImage(uri);
-      return uri;
-    }
-    return null;
-  };
   useEffect(() => {
     if (selectedImage) uploadProfileImage();
   }, [selectedImage]);
 
   const uploadProfileImage = async () => {
+    setIsLoading(true);
     try {
       let imageUri: string | null | undefined = selectedImage;
       if (imageUri === null) {
@@ -73,9 +52,28 @@ export default function Profile() {
       });
 
       console.log("Imagem de perfil atualizada com sucesso!");
+      setSelectedImage(downloadURL); // Update the selected image with the download URL
     } catch (error) {
       console.error("Erro ao fazer upload da imagem de perfil:", error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const { uri } = result.assets[0];
+      setSelectedImage(uri);
+      return uri;
+    }
+    return null;
   };
 
   const takePhoto = async () => {
@@ -112,7 +110,9 @@ export default function Profile() {
       }}
     >
       <View className={`w-full items-center justify-center`}>
-        {userAuthenticated && userAuthenticated.photoURL ? (
+        {isLoading ? (
+          <Text className={`text-white`}>Carregando...</Text>
+        ) : userAuthenticated && userAuthenticated.photoURL ? (
           <Image
             source={{ uri: userAuthenticated.photoURL }}
             className={`w-28 rounded-full h-28`}
@@ -131,7 +131,9 @@ export default function Profile() {
         )}
 
         <Text
-          className={`w-full text-center p-2 text-xl text-white font-outfit-regular`}
+          className={`w-full text-center p-2 text-xl  font-outfit-regular ${
+            isDark ? "text-white" : "text-black"
+          }`}
         >
           {" "}
           {userData?.name}
@@ -143,11 +145,11 @@ export default function Profile() {
         </Text>
         <View className="flex flex-row mt-4 w-full justify-center gap-4">
           <View
-            className={` flex flex-row items-center justify-center w-1/3 border border-green-400 p-1 rounded-lg`}
+            className={`rounded-lg  border-green-400 p-1 flex flex-row items-center justify-center w-1/3 border`}
           >
-            <TouchableRipple onPress={takePhoto} className={``}>
+            <TouchableRipple onPress={takePhoto} className={`w-full`}>
               <Text
-                className={`text-green-500 text-center font-outfit-regular `}
+                className={`text-green-500 text-center  w-full font-outfit-regular `}
               >
                 Tirar foto
               </Text>
@@ -158,9 +160,9 @@ export default function Profile() {
           >
             <TouchableRipple onPress={pickImage} className={`w-full`}>
               <Text
-                className={`text-green-500 w-full text-center font-outfit-regular`}
+                className={`text-green-500 text-center  w-full font-outfit-regular `}
               >
-                Carregar uma foto
+                Abrir Galeria
               </Text>
             </TouchableRipple>
           </View>
