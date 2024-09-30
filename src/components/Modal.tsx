@@ -40,7 +40,7 @@ const TransactionModal = () => {
 
   const handleAddTransaction = async () => {
     console.log(parseFromBRL(amount));
-    const db = SQLite.openDatabaseSync("transactions");
+    const db = await SQLite.openDatabaseAsync("transactions");
     if (!name || !amount) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;

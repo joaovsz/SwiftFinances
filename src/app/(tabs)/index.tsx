@@ -15,7 +15,7 @@ import { useTheme } from "@/src/context/ThemeContext";
 export default function Home() {
   const { totalAmount, state, incomes, expenses, calculateIncomes } =
     useFinances();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   useEffect(() => {
     calculateIncomes(state.totalIncomes);
   }, []);
@@ -32,7 +32,9 @@ export default function Home() {
         {/* 72px */}
         <HeaderUser />
         <Text
-          className={`${theme.colors.text}  font-outfit-medium text-[20px] text-left pl-2`}
+          className={`${
+            !isDark ? "text-black" : "text-white"
+          }  font-outfit-medium text-[20px] text-left pl-2`}
         >
           Resumo
         </Text>
@@ -100,7 +102,9 @@ export default function Home() {
           className={`flex flex-row items-center justify-between w-full mt-4`}
         >
           <Text
-            className={`${theme.colors.background} text-[20px] font-outfit-bold w-1/2 text-left pl-2`}
+            className={`${
+              !isDark ? "text-black" : "text-white"
+            } text-[20px] font-outfit-bold w-1/2 text-left pl-2`}
           >
             Transações
           </Text>

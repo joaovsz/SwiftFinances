@@ -4,6 +4,7 @@ import { Usuario } from "../../src/models/User";
 import { db } from "@/firebaseConfig";
 import { getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import Toast from "react-native-toast-message";
 
 const addDocumentToCollection = async <T extends WithFieldValue<DocumentData>>(
   collectionName: string,
@@ -55,9 +56,12 @@ export const getUsuarioById = async (): Promise<Usuario | null> => {
     const user = auth.currentUser;
 
     if (!user) {
-      throw new Error("Usuário não está logado");
+      Toast.show({
+        type: "error",
+        text1: "Usuário não está logado",
+      });
     }
-
+    if (!user) return null;
     const docRef = doc(db, "usuarios", user.uid);
     const docSnap = await getDoc(docRef);
 

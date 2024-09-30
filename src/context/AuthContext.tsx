@@ -23,21 +23,28 @@ export const AuthProvider = ({ children }: any) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    Storage.getItem({ key: "auth" }).then((res) => {
-      if (res) {
-        setUser(JSON.parse(res));
+    const initializeAuth = async () => {
+      const storedUser = await Storage.getItem({ key: "auth" });
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
       setLoading(false);
-    });
+    };
+
+    initializeAuth();
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
-      user
-        ? Storage.setItem({
-            key: `auth`,
-            value: JSON.stringify(user),
-          })
-        : Storage.removeItem({ key: "auth" });
+      if (user) {
+        Storage.setItem({
+          key: "auth",
+          value: JSON.stringify(user),
+        });
+      } else {
+        Storage.removeItem({ key: "auth" });
+        setUserData(null);
+      }
     });
 
     return unsubscribe;
@@ -46,9 +53,18 @@ export const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     const getLoggedUser = async () => {
       const res = await getUsuarioById();
-      res && setUserData(res);
+      if (res) {
+        setUserData(res);
+      } else {
+        setUserData(null);
+      }
     };
-    user && getLoggedUser();
+
+    if (user) {
+      getLoggedUser();
+    } else {
+      setUserData(null);
+    }
   }, [user]);
 
   return (
