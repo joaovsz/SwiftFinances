@@ -30,17 +30,21 @@ export const FinancesProvider = ({ children }: { children: ReactNode }) => {
           (id INTEGER PRIMARY KEY NOT NULL, label TEXT NOT NULL, value REAL NOT NULL, 
           type REAL NOT NULL,
           created_at TEXT NOT NULL)`);
-        return (await db.getAllAsync(
-          "SELECT * FROM transactions"
-        )) as Transaction[];
+        return db.getAllAsync("SELECT * FROM transactions").then((res) => {
+          return res as Transaction[];
+        });
       } catch (err) {
         console.log(err);
         return [];
       }
     };
-    createDB().then((res) => {
-      setState((prev) => ({ ...prev, transaction: res }));
-    });
+    const fetchTransactions = async () => {
+      const res = await createDB();
+      if (res) {
+        setState((prev) => ({ ...prev, transaction: res }));
+      }
+    };
+    fetchTransactions();
   }, []);
 
   useEffect(() => {
