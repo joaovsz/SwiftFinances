@@ -15,16 +15,18 @@ import * as SQLite from "expo-sqlite";
 
 export const FinancesProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<State>(initialState);
+  const [db, setDb] = useState<SQLite.SQLiteDatabase | null>(null);
   const [incomes, setIncomes] = useState<number>(0);
   const [expenses, setExpenses] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
   useEffect(() => {
     const createDB = async () => {
+      const db = await SQLite.openDatabaseAsync("transactions", {
+        useNewConnection: true,
+      });
+      setDb(db);
       try {
-        const db = await SQLite.openDatabaseAsync("transactions", {
-          useNewConnection: true,
-        });
         await db.execAsync(`
           CREATE TABLE IF NOT EXISTS transactions
           (id INTEGER PRIMARY KEY NOT NULL, label TEXT NOT NULL, value REAL NOT NULL, 
@@ -127,6 +129,7 @@ export const FinancesProvider = ({ children }: { children: ReactNode }) => {
       value={{
         state,
         totalAmount,
+        db,
         openAddTransactionModal,
         incomes,
         expenses,

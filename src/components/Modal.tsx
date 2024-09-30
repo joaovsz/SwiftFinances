@@ -32,6 +32,7 @@ const TransactionModal = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [category, setCategory] = useState("Entrada");
   // const { create } = useTransactionDatabase();
+  const { db } = useFinances();
   const {
     openAddTransactionModal,
     setOpenAddTransactionModal,
@@ -40,7 +41,6 @@ const TransactionModal = () => {
 
   const handleAddTransaction = async () => {
     console.log(parseFromBRL(amount));
-    const db = await SQLite.openDatabaseAsync("transactions");
     if (!name || !amount) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
@@ -53,16 +53,20 @@ const TransactionModal = () => {
       type: category === "Entrada" ? 1 : 2,
     };
     try {
-      await db.runAsync(
-        `INSERT INTO transactions (id, label, value, type, created_at) VALUES (?, ?, ?, ?, ?)`,
-        [
-          transaction.id,
-          transaction.label,
-          transaction.value,
-          transaction.type,
-          transaction.date,
-        ]
-      );
+      console.log(db);
+      console.log(transaction);
+      if (db)
+        await db.runAsync(
+          `INSERT INTO transactions (id, label, value, type, created_at) VALUES (?, ?, ?, ?, ?)`,
+          [
+            transaction.id,
+            transaction.label,
+            transaction.value,
+            transaction.type,
+            transaction.date,
+          ]
+        );
+
       addTransaction(transaction);
       setOpenAddTransactionModal(false);
       setAmount("");
