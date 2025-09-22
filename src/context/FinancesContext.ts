@@ -1,6 +1,5 @@
 import { createContext, Dispatch, useContext } from "react";
 import { Transaction } from "../models/transaction";
-import * as SQLite from "expo-sqlite";
 
 export type State = {
   reloaded: boolean;
@@ -24,7 +23,7 @@ export type FinancesContextType = {
   incomes: number;
   expenses: number;
   totalAmount: number;
-  db: SQLite.SQLiteDatabase | null;
+  db: any; // Changed to any to support both SQLite and web storage
   setTotalAmount: Dispatch<React.SetStateAction<number>>;
   reloadValues: () => void;
   addTransaction: (transaction: Transaction) => void;

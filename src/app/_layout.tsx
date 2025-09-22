@@ -1,14 +1,6 @@
 import "../global.css";
 
-import {
-  Outfit_300Light,
-  Outfit_400Regular,
-  Outfit_500Medium,
-  Outfit_600SemiBold,
-  Outfit_700Bold,
-  Outfit_800ExtraBold,
-  useFonts,
-} from "@expo-google-fonts/outfit";
+import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
@@ -21,12 +13,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function HomeLayout() {
   const [fontsLoaded] = useFonts({
-    Outfit_300Light,
-    Outfit_400Regular,
-    Outfit_500Medium,
-    Outfit_600SemiBold,
-    Outfit_700Bold,
-    Outfit_800ExtraBold,
+    'AlanSans-Light': require('../assets/fonts/AlanSans-Variable.ttf'),
+    'AlanSans-Regular': require('../assets/fonts/AlanSans-Variable.ttf'),
+    'AlanSans-Medium': require('../assets/fonts/AlanSans-Variable.ttf'),
+    'AlanSans-SemiBold': require('../assets/fonts/AlanSans-Variable.ttf'),
+    'AlanSans-Bold': require('../assets/fonts/AlanSans-Variable.ttf'),
+    'AlanSans-ExtraBold': require('../assets/fonts/AlanSans-Variable.ttf'),
   });
   useEffect(() => {
     if (fontsLoaded) {

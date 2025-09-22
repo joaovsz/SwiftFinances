@@ -17,8 +17,14 @@ const lightTheme = {
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
-    background: "#fff",
-    text: "#333",
+    background: "#f5f5f5",    // Cinza claro neutro
+    text: "#1f2937",          // Cinza escuro para texto
+    primary: "#3b82f6",       // Azul moderno
+    secondary: "#6b7280",     // Cinza médio
+    accent: "#1d4ed8",        // Azul escuro
+    surface: "#ffffff",       // Branco sólido
+    card: "#ffffff",          // Card branco
+    border: "#e5e7eb",        // Borda cinza suave
   },
 };
 const darkTheme = {
@@ -27,9 +33,14 @@ const darkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
-    background: "#000",
-    text: "#fff",
-    primary: "#80AF81",
+    background: "#111827",    // Cinza escuro
+    text: "#f9fafb",          // Branco para texto
+    primary: "#3b82f6",       // Azul moderno
+    secondary: "#6b7280",     // Cinza médio  
+    accent: "#60a5fa",        // Azul claro
+    surface: "#1f2937",       // Cinza escuro sólido
+    card: "#374151",          // Card cinza
+    border: "#4b5563",        // Borda cinza
   },
 };
 export type Theme = typeof lightTheme;

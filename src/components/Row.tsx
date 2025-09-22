@@ -37,11 +37,11 @@ const Row: React.FC<RowProps> = ({
       className={`p-4  rounded-3xl my-1 bg-[#3f3f3f]`}
     >
       <View className={`flex-row items-center gap-2`}>
-        <Text className={`text-[16px] flex-1 font-outfit-light text-white`}>
+        <Text className={`text-[16px] flex-1 font-alan-light text-white`}>
           {title}
         </Text>
         <Text
-          className={`text-sm font-outfit-bold ${
+          className={`text-sm font-alan-bold ${
             type == 1 ? "text-green-500" : "text-red-500"
           } ml-auto`}
         >

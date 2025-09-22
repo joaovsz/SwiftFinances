@@ -14,7 +14,7 @@ export default function Settings() {
           <Text
             className={`text-lg text-[${
               isDark ? "#fff" : "#000"
-            }] font-outfit-regular`}
+            }] font-alan-regular`}
           >
             {isDark ? (
               <MoonIcon className="w-6 h-6 text-gray-500" />

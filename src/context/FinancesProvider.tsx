@@ -5,44 +5,61 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import { Platform } from "react-native";
 import { Transaction } from "../models/transaction";
 import FinancesContext, {
   FinancesContextType,
   State,
   initialState,
 } from "./FinancesContext";
-import * as SQLite from "expo-sqlite";
+
+// Conditional import for SQLite
+let SQLite: any = null;
+if (Platform.OS !== 'web') {
+  SQLite = require('expo-sqlite');
+}
 
 export const FinancesProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<State>(initialState);
-  const [db, setDb] = useState<SQLite.SQLiteDatabase | null>(null);
+  const [db, setDb] = useState<any>(null);
   const [incomes, setIncomes] = useState<number>(0);
   const [expenses, setExpenses] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [openAddTransactionModal, setOpenAddTransactionModal] = useState(false);
+  
   useEffect(() => {
     const createDB = async () => {
-      const db = await SQLite.openDatabaseAsync("transactions", {
-        useNewConnection: true,
-      });
-      setDb(db);
-      try {
-        await db.execAsync(`
-          CREATE TABLE IF NOT EXISTS transactions
-          (id INTEGER PRIMARY KEY NOT NULL, label TEXT NOT NULL, value REAL NOT NULL, 
-          type REAL NOT NULL,
-          created_at TEXT NOT NULL)`);
-        return db.getAllAsync("SELECT * FROM transactions").then((res) => {
-          return res as Transaction[];
+      if (Platform.OS === 'web') {
+        // For web, use localStorage as fallback
+        const existingData = localStorage.getItem('transactions');
+        const transactions = existingData ? JSON.parse(existingData) : [];
+        setState((prev) => ({ ...prev, transaction: transactions }));
+        return transactions;
+      } else {
+        // For mobile, use SQLite
+        const db = await SQLite.openDatabaseAsync("transactions", {
+          useNewConnection: true,
         });
-      } catch (err) {
-        console.log(err);
-        return [];
+        setDb(db);
+        try {
+          await db.execAsync(`
+            CREATE TABLE IF NOT EXISTS transactions
+            (id INTEGER PRIMARY KEY NOT NULL, label TEXT NOT NULL, value REAL NOT NULL, 
+            type REAL NOT NULL,
+            created_at TEXT NOT NULL)`);
+          return db.getAllAsync("SELECT * FROM transactions").then((res: any) => {
+            return res as Transaction[];
+          });
+        } catch (err) {
+          console.log(err);
+          return [];
+        }
       }
     };
+    
     const fetchTransactions = async () => {
       const res = await createDB();
-      if (res) {
+      if (res && Platform.OS !== 'web') {
         setState((prev) => ({ ...prev, transaction: res }));
       }
     };
@@ -72,13 +89,27 @@ export const FinancesProvider = ({ children }: { children: ReactNode }) => {
       ...prev,
       transaction: [...prev.transaction, transaction],
     }));
+    
+    // Save to localStorage on web
+    if (Platform.OS === 'web') {
+      const updatedTransactions = [...state.transaction, transaction];
+      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+    }
   };
 
   const removeTransaction = async (id: number) => {
-    const db = await SQLite.openDatabaseAsync("transactions", {
-      useNewConnection: true,
-    });
-    await db.execAsync(`DELETE FROM transactions WHERE id = ${id}`);
+    if (Platform.OS === 'web') {
+      // For web, update localStorage
+      const updatedTransactions = state.transaction.filter((t) => t.id !== id);
+      localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+    } else {
+      // For mobile, use SQLite
+      const db = await SQLite.openDatabaseAsync("transactions", {
+        useNewConnection: true,
+      });
+      await db.execAsync(`DELETE FROM transactions WHERE id = ${id}`);
+    }
+    
     setState((prev) => ({
       ...prev,
       transaction: prev.transaction.filter((t) => t.id !== id),

@@ -131,7 +131,7 @@ export default function Profile() {
         )}
 
         <Text
-          className={`w-full text-center p-2 text-xl  font-outfit-regular ${
+          className={`w-full text-center p-2 text-xl  font-alan-regular ${
             isDark ? "text-white" : "text-black"
           }`}
         >
@@ -139,7 +139,7 @@ export default function Profile() {
           {userData?.name}
         </Text>
         <Text
-          className={`w-full text-center text-[#c6c6c6] font-outfit-regular my-3`}
+          className={`w-full text-center text-[#c6c6c6] font-alan-regular my-3`}
         >
           {userData?.email}
         </Text>
@@ -149,7 +149,7 @@ export default function Profile() {
           >
             <TouchableRipple onPress={takePhoto} className={`w-full`}>
               <Text
-                className={`text-green-500 text-center  w-full font-outfit-regular `}
+                className={`text-green-500 text-center  w-full font-alan-regular `}
               >
                 Tirar foto
               </Text>
@@ -160,7 +160,7 @@ export default function Profile() {
           >
             <TouchableRipple onPress={pickImage} className={`w-full`}>
               <Text
-                className={`text-green-500 text-center  w-full font-outfit-regular `}
+                className={`text-green-500 text-center  w-full font-alan-regular `}
               >
                 Abrir Galeria
               </Text>
@@ -194,7 +194,7 @@ export default function Profile() {
           color={"#ef4444"}
           className={`text-red-400 w-1/3`}
         />
-        <Text className={`text-red-500 w-2/3 text-center font-outfit-regular`}>
+        <Text className={`text-red-500 w-2/3 text-center font-alan-regular`}>
           Fazer Logout
         </Text>
       </Pressable>

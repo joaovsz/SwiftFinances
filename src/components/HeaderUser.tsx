@@ -24,8 +24,8 @@ export default function HeaderUser() {
       )}
 
       <View className={`flex-row`}>
-        <Text className={`font-outfit-bold text-[18px] text-white`}>Olá, </Text>
-        <Text className={`font-outfit-bold text-[18px] text-white`}>
+        <Text className={`font-alan-bold text-[18px] text-white`}>Olá, </Text>
+        <Text className={`font-alan-bold text-[18px] text-white`}>
           {userData?.name}
         </Text>
       </View>

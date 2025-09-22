@@ -14,6 +14,7 @@ import { auth } from "@/firebaseConfig";
 import Toast from "react-native-toast-message";
 import { CustomTextInput, CustomButton } from "@/src/components/inputs";
 import { useTheme } from "@/src/context/ThemeContext";
+import { GlassContainer } from "@/src/components/GlassContainer";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,24 +31,9 @@ export default function Login() {
     try {
       await login(email, password);
       router.replace("/(tabs)");
-    } catch (error: any) {
-      Toast.show({
-        type: "error",
-        text1: (error as Error).message,
-      });
-    }
-  };
-  
-  const handleSendResetEmail = async () => {
-    try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      Toast.show({
-        type: "success",
-        text1: "Email enviado com sucesso",
-        text2: "Verifique sua caixa de entrada",
-      });
-      setModalVisible(false);
-    } catch (error: any) {
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Erro", (error as Error).message);
       Toast.show({
         type: "error",
         text1: (error as Error).message,
@@ -64,19 +50,7 @@ export default function Login() {
       }}
     >
       <View className="flex-1 gap-6 relative mx-6 mt-8 justify-center">
-        <View 
-          style={{
-            backgroundColor: theme.colors.surface,
-            borderRadius: 16,
-            padding: 24,
-            marginBottom: 20,
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-          }}
-        >
+        <GlassContainer intensity="medium" style={{ marginBottom: 20 }}>
           <Text 
             className="font-alan-bold text-3xl text-center mb-6"
             style={{ color: theme.colors.text }}
@@ -123,7 +97,7 @@ export default function Login() {
             size="large"
             style={{ marginTop: 16 }}
           />
-        </View>
+        </GlassContainer>
         
         <View className="flex flex-row gap-2 justify-center mt-6">
           <Text 
@@ -132,13 +106,11 @@ export default function Login() {
           >
             Ainda não tem uma conta?
           </Text>
-          <Text
-            onPress={() => router.replace("/Signup")}
-            style={{ color: theme.colors.primary }}
-            className="font-alan-bold"
-          >
-            Cadastre-se
-          </Text>
+          <Pressable onPress={() => router.replace("/Signup")}>
+            <Text className="text-green-500 font-alan-bold">
+              Cadastre-se
+            </Text>
+          </Pressable>
         </View>
       </View>
 
@@ -153,56 +125,59 @@ export default function Login() {
         <View
           style={{
             backgroundColor: "rgba(0,0,0,0.7)",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 20,
           }}
-          className="w-full h-full"
         >
-          <View style={{
-            margin: 20,
-            backgroundColor: theme.colors.background,
-            borderRadius: 16,
-            padding: 36,
-            marginTop: '30%',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-          }}>
-            <Text style={{
-              color: theme.colors.text,
-              textAlign: 'center',
-              marginBottom: 8,
-              fontWeight: '600',
-              fontSize: 24,
-            }}>
-              Redefinir Senha
+          <GlassContainer intensity="strong">
+            <Text
+              className="font-alan-bold text-xl mb-4"
+              style={{ color: theme.colors.text }}
+            >
+              Esqueceu sua senha?
+            </Text>
+            <Text
+              className="font-alan-regular mb-6"
+              style={{ color: theme.colors.text }}
+            >
+              Digite seu email para receber um link de redefinição de senha.
             </Text>
             <CustomTextInput
               label="Email"
-              placeholder="Digite seu email"
-              keyboardType="email-address"
               value={resetEmail}
               onChangeText={setResetEmail}
-              style={{ marginBottom: 16 }}
+              keyboardType="email-address"
             />
-            <View className="flex-row mt-4 justify-between w-full">
-              <Button
+            <View className="flex-row gap-3 mt-6">
+              <CustomButton
+                title="Cancelar"
                 onPress={() => setModalVisible(false)}
-                mode="text"
-                textColor={theme.colors.primary}
-              >
-                Cancelar
-              </Button>
-              <Button
-                onPress={handleSendResetEmail}
-                mode="contained"
-                buttonColor={theme.colors.primary}
-                textColor="white"
-              >
-                Enviar
-              </Button>
+                variant="secondary"
+                style={{ flex: 1 }}
+              />
+              <CustomButton
+                title="Enviar"
+                onPress={async () => {
+                  try {
+                    await sendPasswordResetEmail(auth, resetEmail);
+                    setModalVisible(false);
+                    Toast.show({
+                      type: "success",
+                      text1: "Email enviado com sucesso!",
+                    });
+                  } catch (error) {
+                    Toast.show({
+                      type: "error",
+                      text1: (error as Error).message,
+                    });
+                  }
+                }}
+                style={{ flex: 1 }}
+              />
             </View>
-          </View>
+          </GlassContainer>
         </View>
       </Modal>
     </SafeAreaView>

@@ -14,6 +14,7 @@ import { auth } from "@/firebaseConfig";
 import Toast from "react-native-toast-message";
 import { CustomTextInput, CustomButton } from "@/src/components/inputs";
 import { useTheme } from "@/src/context/ThemeContext";
+import { GlassContainer } from "@/src/components/GlassContainer";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,6 @@ export default function Login() {
   const handleForgetPassword = async () => {
     setModalVisible(true);
   };
-  
   const handleLogin = async () => {
     try {
       await login(email, password);
@@ -37,7 +37,6 @@ export default function Login() {
       });
     }
   };
-  
   const handleSendResetEmail = async () => {
     try {
       await sendPasswordResetEmail(auth, resetEmail);
@@ -64,19 +63,7 @@ export default function Login() {
       }}
     >
       <View className="flex-1 gap-6 relative mx-6 mt-8 justify-center">
-        <View 
-          style={{
-            backgroundColor: theme.colors.surface,
-            borderRadius: 16,
-            padding: 24,
-            marginBottom: 20,
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-          }}
-        >
+        <GlassContainer intensity="medium" style={{ marginBottom: 20 }}>
           <Text 
             className="font-alan-bold text-3xl text-center mb-6"
             style={{ color: theme.colors.text }}
@@ -123,7 +110,7 @@ export default function Login() {
             size="large"
             style={{ marginTop: 16 }}
           />
-        </View>
+        </GlassContainer>
         
         <View className="flex flex-row gap-2 justify-center mt-6">
           <Text 
@@ -134,8 +121,7 @@ export default function Login() {
           </Text>
           <Text
             onPress={() => router.replace("/Signup")}
-            style={{ color: theme.colors.primary }}
-            className="font-alan-bold"
+            className="text-green-500 font-alan-bold"
           >
             Cadastre-se
           </Text>
@@ -152,29 +138,18 @@ export default function Login() {
       >
         <View
           style={{
-            backgroundColor: "rgba(0,0,0,0.7)",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20,
           }}
-          className="w-full h-full"
         >
-          <View style={{
-            margin: 20,
-            backgroundColor: theme.colors.background,
-            borderRadius: 16,
-            padding: 36,
-            marginTop: '30%',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-          }}>
-            <Text style={{
-              color: theme.colors.text,
-              textAlign: 'center',
-              marginBottom: 8,
-              fontWeight: '600',
-              fontSize: 24,
-            }}>
+          <GlassContainer intensity="strong" style={{ width: '100%', maxWidth: 400 }}>
+            <Text 
+              className="font-alan-bold text-2xl text-center mb-6"
+              style={{ color: theme.colors.text }}
+            >
               Redefinir Senha
             </Text>
             <CustomTextInput
@@ -183,26 +158,25 @@ export default function Login() {
               keyboardType="email-address"
               value={resetEmail}
               onChangeText={setResetEmail}
-              style={{ marginBottom: 16 }}
+              fontWeight="400"
             />
-            <View className="flex-row mt-4 justify-between w-full">
-              <Button
+            <View className="flex-row mt-6 justify-between w-full">
+              <CustomButton
+                title="Cancelar"
                 onPress={() => setModalVisible(false)}
-                mode="text"
-                textColor={theme.colors.primary}
-              >
-                Cancelar
-              </Button>
-              <Button
+                variant="outline"
+                size="medium"
+                style={{ flex: 1, marginRight: 8 }}
+              />
+              <CustomButton
+                title="Enviar"
                 onPress={handleSendResetEmail}
-                mode="contained"
-                buttonColor={theme.colors.primary}
-                textColor="white"
-              >
-                Enviar
-              </Button>
+                variant="primary"
+                size="medium"
+                style={{ flex: 1, marginLeft: 8 }}
+              />
             </View>
-          </View>
+          </GlassContainer>
         </View>
       </Modal>
     </SafeAreaView>

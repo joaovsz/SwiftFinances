@@ -23,21 +23,22 @@ export default function Home() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: `${theme.colors.background}`,
+        backgroundColor: theme.colors.background,
         flex: 1,
       }}
     >
-      {<TransactionModal />}
-      <View className={`h-[85%] w-full py-4 gap-4 px-3 `}>
-        {/* 72px */}
+      <TransactionModal />
+      <View className="h-[85%] w-full py-6 gap-6 px-4">
         <HeaderUser />
+        
         <Text
           className={`${
             !isDark ? "text-black" : "text-white"
-          }  font-outfit-medium text-[20px] text-left pl-2`}
+          } font-alan-semibold text-[24px] text-left mb-4`}
         >
-          Resumo
+          Resumo Financeiro
         </Text>
+        
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -45,68 +46,85 @@ export default function Home() {
             flexDirection: "row",
             height: 90,
           }}
-          className={`flex-row gap-4 max-h-[150px]`}
+          className="flex-row gap-4 max-h-[150px]"
         >
           <View
-            className={`p-4 bg-[#101010] w-[320px] items-left h-full justify-around rounded-2xl mr-4`}
+            className="p-6 w-[320px] items-left h-full justify-around rounded-2xl mr-4"
+            style={{
+              backgroundColor: theme.colors.surface,
+              elevation: 4,
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 8,
+            }}
           >
-            <View
-              className={`flex flex-row gap-2 w-1/2 items-center max-h-[150px]`}
-            >
+            <View className="flex flex-row gap-2 w-1/2 items-center max-h-[150px]">
               <TotalIcon />
-              <Text className={`text-[#fff] font-outfit-regular text-2xl`}>
+              <Text className={`${isDark ? 'text-white' : 'text-gray-800'} font-alan-regular text-2xl`}>
                 Saldo
               </Text>
             </View>
-            <Text
-              className={`text-green-700 text-left font-outfit-semibold text-3xl w-full`}
-            >
+            <Text className={`${isDark ? 'text-blue-400' : 'text-blue-600'} text-left font-alan-semibold text-3xl w-full`}>
               {formatToBRL(totalAmount)}
             </Text>
           </View>
 
-          <View className={`gap-4 h-full`} style={{ height: 90 }}>
+          <View className="gap-4 h-full" style={{ height: 90 }}>
             <View
-              className={`p-4 bg-[#101010] w-[320px]  flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4`}
+              className="p-4 w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4"
+              style={{
+                backgroundColor: theme.colors.surface,
+                elevation: 3,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.08,
+                shadowRadius: 6,
+              }}
             >
-              <View className={`flex flex-row w-1/2 gap-2 items-center`}>
+              <View className="flex flex-row w-1/2 gap-2 items-center">
                 <IncomeIcon />
-                <Text className={`text-[#ddd1d1] text-xl font-outfit-regular`}>
+                <Text className={`${isDark ? 'text-blue-200' : 'text-blue-700'} text-xl font-alan-regular`}>
                   Entradas
                 </Text>
               </View>
               <Text
-                className={`text-[#fff] font-outfit-semibold w-1/2 text-right text-xl`}
+                className={`${isDark ? 'text-white' : 'text-gray-800'} font-alan-semibold w-1/2 text-right text-xl`}
               >
                 {formatToBRL(incomes)}
               </Text>
             </View>
             <View
-              className={`p-4 bg-[#101010] w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4`}
+              className="p-4 w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4"
+              style={{
+                backgroundColor: theme.colors.surface,
+                elevation: 3,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.08,
+                shadowRadius: 6,
+              }}
             >
-              <View className={`flex flex-row w-1/2 gap-2 items-center`}>
+              <View className="flex flex-row w-1/2 gap-2 items-center">
                 <ExpensesIcon />
-                <Text className={`text-[#ddd1d1] text-xl font-outfit-regular`}>
+                <Text className={`${isDark ? 'text-red-200' : 'text-red-700'} text-xl font-alan-regular`}>
                   Saídas
                 </Text>
               </View>
-              <Text
-                className={`text-[#FE0000] font-outfit-semibold w-1/2 text-right text-xl`}
-              >
+              <Text className="text-red-500 font-alan-semibold w-1/2 text-right text-xl">
                 - {formatToBRL(expenses)}
               </Text>
             </View>
           </View>
         </ScrollView>
-        <View
-          className={`flex flex-row items-center justify-between w-full mt-4`}
-        >
+        
+        <View className="flex flex-row items-center justify-between w-full mb-4">
           <Text
             className={`${
               !isDark ? "text-black" : "text-white"
-            } text-[20px] font-outfit-bold w-1/2 text-left pl-2`}
+            } text-[20px] font-alan-bold w-1/2 text-left`}
           >
-            Transações
+            Transações Recentes
           </Text>
         </View>
         <Lista />

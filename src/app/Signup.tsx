@@ -1,15 +1,17 @@
 import { View, Text, Pressable, SafeAreaView } from "react-native";
 import React, { useState } from "react";
-import { TextInput } from "react-native-paper";
 import { router } from "expo-router";
 import { register } from "@/firebase/Services/authService";
 import Toast from "react-native-toast-message";
+import { CustomTextInput, CustomButton } from "@/src/components/inputs";
+import { useTheme } from "@/src/context/ThemeContext";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { theme } = useTheme();
 
   const handleSignup = async () => {
     if (password !== confirmPassword) {
@@ -43,84 +45,78 @@ export default function Signup() {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#1E1E1E",
+        backgroundColor: theme.colors.background,
         flex: 1,
         height: "100%",
       }}
     >
       <View className="flex-1 gap-4 relative mx-8 mt-8 justify-center ">
-        <Text className="text-white text-center mb-2 font-outfit-semibold text-2xl ">
+        <Text style={{
+          color: theme.colors.text,
+          textAlign: 'center',
+          marginBottom: 8,
+          fontWeight: '600',
+          fontSize: 24,
+        }}>
           Criar uma nova conta
         </Text>
-        <TextInput
-          label={"Email"}
-          placeholder={"Digite seu email"}
-          mode={"outlined"}
-          className="font-outfit-regular"
-          textColor="#fff"
-          style={{ backgroundColor: "#1E1E1E" }}
+        <CustomTextInput
+          label="Email"
+          placeholder="Digite seu email"
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
+          style={{ marginBottom: 12 }}
         />
-        <TextInput
-          label={"Nome Completo"}
-          placeholder={"Digite seu nome completo"}
-          mode={"outlined"}
-          className="font-outfit-regular"
-          textColor="#fff"
-          style={{ backgroundColor: "#1E1E1E" }}
+        <CustomTextInput
+          label="Nome Completo"
+          placeholder="Digite seu nome completo"
           value={fullName}
           onChangeText={setFullName}
+          style={{ marginBottom: 12 }}
         />
-        <TextInput
-          label={"Nome de usuário"}
-          placeholder={"Digite um nome de usuário"}
-          mode={"outlined"}
-          className="font-outfit-regular"
-          textColor="#fff"
-          style={{ backgroundColor: "#1E1E1E" }}
+        <CustomTextInput
+          label="Nome de usuário"
+          placeholder="Digite um nome de usuário"
           value={username}
           onChangeText={setUsername}
+          style={{ marginBottom: 12 }}
         />
-        <TextInput
-          label={"Informe uma senha"}
-          placeholder={"Senha"}
-          className="font-outfit-regular"
-          mode={"outlined"}
-          textColor="#fff"
-          style={{ backgroundColor: "#1E1E1E" }}
+        <CustomTextInput
+          label="Informe uma senha"
+          placeholder="Senha"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
+          style={{ marginBottom: 12 }}
         />
-        <TextInput
-          label={"Digite novamente"}
-          placeholder={"Senha"}
-          className="font-outfit-regular"
-          mode={"outlined"}
-          textColor="#fff"
-          style={{ backgroundColor: "#1E1E1E" }}
+        <CustomTextInput
+          label="Digite novamente"
+          placeholder="Senha"
           secureTextEntry
           value={confirmPassword}
           onChangeText={setConfirmPassword}
+          style={{ marginBottom: 16 }}
         />
 
-        <Pressable
-          className="bg-green-500 p-4 mt-4 rounded-2xl"
+        <CustomButton
+          title="Cadastrar"
           onPress={handleSignup}
-        >
-          <Text className="text-white text-center font-outfit-bold text-xl">
-            Cadastrar
-          </Text>
-        </Pressable>
+          size="large"
+          style={{ marginTop: 16, marginBottom: 16 }}
+        />
         <View className="flex flex-row gap-2 justify-center">
-          <Text className="text-white  text-center font-outfit-bold">
+          <Text style={{
+            color: theme.colors.text,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          }}>
             Já possui uma conta?
           </Text>
           <Text
             onPress={() => router.replace("/Login")}
-            className="text-green-500 font-outfit-bold"
+            style={{ color: theme.colors.primary }}
+            className="font-alan-bold"
           >
             Fazer login
           </Text>
