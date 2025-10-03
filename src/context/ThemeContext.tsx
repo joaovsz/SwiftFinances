@@ -23,9 +23,9 @@ const lightTheme = {
     secondary: "#64748b",     // Slate 500 - Cinza médio
     accent: "#1e40af",        // Blue 800 - Azul escuro
     surface: "#ffffff",       // Branco puro
-    card: "#f8fafc",          // Slate 50 - Cinza clarissimo
+    card: "#fff",          // Slate 50 - Cinza clarissimo
     border: "#cbd5e1",        // Slate 300 - Borda cinza
-    headerBg: "#e2e8f0",      // Slate 200 - Header cinza claro
+    headerBg: "#fff",      // Slate 200 - Header cinza claro
     tabBar: "#f8fafc",        // Slate 50 - Tab bar cinza
   },
 };
@@ -35,7 +35,7 @@ const darkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
-    background: "#0f172a",    // Slate 900 - Azul escuro profundo
+    background: "#000020",    // Slate 900 - Azul escuro profundo
     text: "#e2e8f0",          // Slate 200 - Texto claro
     primary: "#3b82f6",       // Blue 500 - Azul vibrante
     secondary: "#64748b",     // Slate 500 - Cinza azulado

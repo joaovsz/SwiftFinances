@@ -143,11 +143,7 @@ export default function Home() {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                elevation: isDark ? 3 : 1,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: isDark ? 0.2 : 0.05,
-                shadowRadius: 4,
+          
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
@@ -188,7 +184,6 @@ export default function Home() {
               fontFamily: 'AlanSans-Bold',
               fontSize: 20,
               lineHeight: 28,
-              paddingVertical: 4,
             }}
           >
             Transações Recentes
