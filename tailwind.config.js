@@ -5,12 +5,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'alan-light': ['AlanSans-Light'],
-        'alan-regular': ['AlanSans-Regular'],
-        'alan-medium': ['AlanSans-Medium'],
-        'alan-semibold': ['AlanSans-SemiBold'],
-        'alan-bold': ['AlanSans-Bold'],
-        'alan-extrabold': ['AlanSans-ExtraBold'],
+        'alan-light': ['AlanSans-Light', 'System'],
+        'alan': ['AlanSans-Regular', 'System'],
+        'alan-medium': ['AlanSans-Medium', 'System'],
+        'alan-semibold': ['AlanSans-SemiBold', 'System'],
+        'alan-bold': ['AlanSans-Bold', 'System'],
+        'alan-extrabold': ['AlanSans-ExtraBold', 'System'],
+        'alan-black': ['AlanSans-Black', 'System'],
       }
     },
   },

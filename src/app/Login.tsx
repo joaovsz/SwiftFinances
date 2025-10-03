@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -20,7 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const handleForgetPassword = async () => {
     setModalVisible(true);
@@ -67,25 +67,50 @@ export default function Login() {
         <View 
           style={{
             backgroundColor: theme.colors.surface,
-            borderRadius: 16,
-            padding: 24,
+            borderRadius: 20,
+            padding: 32,
             marginBottom: 20,
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
+            elevation: isDark ? 8 : 4,
+            shadowColor: isDark ? '#000' : '#1f2937',
+            shadowOffset: { width: 0, height: isDark ? 4 : 2 },
+            shadowOpacity: isDark ? 0.3 : 0.08,
+            shadowRadius: isDark ? 12 : 8,
           }}
         >
-          <Text 
-            className="font-alan-bold text-3xl text-center mb-6"
-            style={{ color: theme.colors.text }}
-          >
-            Swift Finances
-          </Text>
+          {/* Logo Section */}
+          <View className="items-center mb-8">
+            <View 
+              style={{
+                backgroundColor: isDark ? theme.colors.surface : theme.colors.primary,
+                borderRadius: 24,
+                padding: 20,
+                marginBottom: 16,
+              }}
+            >
+              <Image 
+                source={require('@/src/assets/SLogo.png')}
+                style={{
+                  width: 60,
+                  height: 60,
+                  resizeMode: 'contain',
+                  tintColor: isDark ? theme.colors.primary : '#ffffff'
+                }}
+              />
+            </View>
+            <Text 
+              className="font-alan-bold text-2xl text-center"
+              style={{ color: theme.colors.text }}
+            >
+              Swift Finances
+            </Text>
+          </View>
+          
           <Text 
             className="font-alan-medium text-lg text-center mb-8"
-            style={{ color: theme.colors.text }}
+            style={{ 
+              color: isDark ? theme.colors.text : theme.colors.secondary,
+              opacity: 0.8 
+            }}
           >
             Faça login em sua conta
           </Text>
@@ -121,7 +146,11 @@ export default function Login() {
             title="Entrar"
             onPress={handleLogin}
             size="large"
-            style={{ marginTop: 16 }}
+            style={{ 
+              marginTop: 20,
+              borderRadius: 16,
+              paddingVertical: 16,
+            }}
           />
         </View>
         
@@ -158,15 +187,15 @@ export default function Login() {
         >
           <View style={{
             margin: 20,
-            backgroundColor: theme.colors.background,
-            borderRadius: 16,
-            padding: 36,
+            backgroundColor: theme.colors.surface,
+            borderRadius: 20,
+            padding: 32,
             marginTop: '30%',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
+            shadowColor: isDark ? '#000' : '#1f2937',
+            shadowOffset: { width: 0, height: isDark ? 4 : 2 },
+            shadowOpacity: isDark ? 0.3 : 0.15,
+            shadowRadius: isDark ? 12 : 8,
+            elevation: isDark ? 10 : 6,
           }}>
             <Text style={{
               color: theme.colors.text,
@@ -174,7 +203,9 @@ export default function Login() {
               marginBottom: 8,
               fontWeight: '600',
               fontSize: 24,
-            }}>
+            }}
+            className="font-alan-bold"
+            >
               Redefinir Senha
             </Text>
             <CustomTextInput
@@ -183,13 +214,19 @@ export default function Login() {
               keyboardType="email-address"
               value={resetEmail}
               onChangeText={setResetEmail}
+              fontWeight="400"
               style={{ marginBottom: 16 }}
             />
-            <View className="flex-row mt-4 justify-between w-full">
+            <View className="flex-row mt-6 justify-between w-full gap-3">
               <Button
                 onPress={() => setModalVisible(false)}
                 mode="text"
                 textColor={theme.colors.primary}
+                style={{
+                  borderRadius: 12,
+                  paddingVertical: 4,
+                  flex: 1,
+                }}
               >
                 Cancelar
               </Button>
@@ -198,6 +235,11 @@ export default function Login() {
                 mode="contained"
                 buttonColor={theme.colors.primary}
                 textColor="white"
+                style={{
+                  borderRadius: 12,
+                  paddingVertical: 4,
+                  flex: 1,
+                }}
               >
                 Enviar
               </Button>

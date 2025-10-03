@@ -251,6 +251,11 @@ export const ProfileModal: React.FC = () => {
             paddingHorizontal: 20,
             paddingBottom: 40,
             maxHeight: screenHeight * 0.9,
+            elevation: isDark ? 10 : 6,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -4 },
+            shadowOpacity: isDark ? 0.3 : 0.1,
+            shadowRadius: 12,
           }}
         >
           <SafeAreaView edges={['bottom']}>
@@ -278,10 +283,10 @@ export const ProfileModal: React.FC = () => {
                 style={{
                   padding: 8,
                   borderRadius: 20,
-                  backgroundColor: theme.colors.surface,
+                  backgroundColor: isDark ? theme.colors.surface : theme.colors.card,
                 }}
               >
-                <XMarkIcon size={24} color={theme.colors.text} />
+                <XMarkIcon size={24} color={theme.colors.secondary} />
               </Pressable>
             </View>
 
@@ -305,7 +310,7 @@ export const ProfileModal: React.FC = () => {
                 <Text
                   style={{
                     fontSize: 16,
-                    color: theme.colors.text + '80',
+                    color: theme.colors.secondary,
                     marginTop: 4,
                     fontFamily: 'AlanSans-Regular',
                   }}
@@ -322,22 +327,63 @@ export const ProfileModal: React.FC = () => {
                   marginBottom: 30,
                 }}
               >
-                <CustomButton
-                  title="Tirar Foto"
+                <Pressable
                   onPress={takePhotoWithCamera}
-                  variant="outline"
-                  size="medium"
-                  style={{ flex: 1 }}
-                  icon={<CameraIcon size={20} color={theme.colors.primary} />}
-                />
-                <CustomButton
-                  title="Galeria"
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 16,
+                    paddingHorizontal: 20,
+                    borderRadius: 12,
+                    borderWidth: 2,
+                    borderColor: theme.colors.primary,
+                    backgroundColor: 'transparent',
+                    gap: 8,
+                  }}
+                  android_ripple={{ color: theme.colors.primary + '20' }}
+                >
+                  <CameraIcon size={20} color={theme.colors.primary} />
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 16,
+                      fontFamily: 'AlanSans-SemiBold',
+                    }}
+                  >
+                    Tirar Foto
+                  </Text>
+                </Pressable>
+                
+                <Pressable
                   onPress={pickImageFromGallery}
-                  variant="outline"
-                  size="medium"
-                  style={{ flex: 1 }}
-                  icon={<PhotoIcon size={20} color={theme.colors.primary} />}
-                />
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 16,
+                    paddingHorizontal: 20,
+                    borderRadius: 12,
+                    borderWidth: 2,
+                    borderColor: theme.colors.primary,
+                    backgroundColor: 'transparent',
+                    gap: 8,
+                  }}
+                  android_ripple={{ color: theme.colors.primary + '20' }}
+                >
+                  <PhotoIcon size={20} color={theme.colors.primary} />
+                  <Text
+                    style={{
+                      color: theme.colors.primary,
+                      fontSize: 16,
+                      fontFamily: 'AlanSans-SemiBold',
+                    }}
+                  >
+                    Galeria
+                  </Text>
+                </Pressable>
               </View>
 
               {/* Logout Button */}
@@ -355,9 +401,10 @@ export const ProfileModal: React.FC = () => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    paddingVertical: 16,
+                    paddingVertical: 18,
                     paddingHorizontal: 24,
                     gap: 8,
+                    minHeight: 56
                   }}
                   android_ripple={{ color: 'rgba(239, 68, 68, 0.1)' }}
                 >
@@ -367,6 +414,8 @@ export const ProfileModal: React.FC = () => {
                       color: '#ef4444',
                       fontSize: 18,
                       fontFamily: 'AlanSans-SemiBold',
+                      lineHeight: 24,
+                      paddingVertical: 2
                     }}
                   >
                     Fazer Logout

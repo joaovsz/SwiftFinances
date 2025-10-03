@@ -3,29 +3,77 @@ import React from "react";
 import tw from "twrnc";
 import { useAuth } from "../context/AuthContext";
 import { UserIcon } from "react-native-heroicons/outline";
+import { useTheme } from "../context/ThemeContext";
 
 export default function HeaderUser() {
   const { userData, user } = useAuth();
+  const { theme, isDark } = useTheme();
+  
   return (
     <View
-      className={`flex-row items-center gap-4 p-4 bg-[#101010] rounded-full`}
+      style={{
+        backgroundColor: isDark ? theme.colors.headerBg : theme.colors.headerBg,
+        borderRadius: 32,
+        padding: 18,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 16,
+        elevation: isDark ? 4 : 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: isDark ? 0.3 : 0.1,
+        shadowRadius: 8,
+        minHeight: 72
+      }}
     >
       {!user?.photoURL ? (
         <View
-          className={`w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center`}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+            backgroundColor: isDark ? theme.colors.surface : theme.colors.card,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
-          <UserIcon size={30} color={"#9ca3af"} />
+          <UserIcon size={24} color={theme.colors.secondary} />
         </View>
       ) : (
         <Image
-          className={`w-10 rounded-full h-10`}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 20,
+          }}
           source={{ uri: user?.photoURL! }}
         />
       )}
 
-      <View className={`flex-row`}>
-        <Text className={`font-alan-bold text-[18px] text-white`}>Olá, </Text>
-        <Text className={`font-alan-bold text-[18px] text-white`}>
+      <View style={{ flexDirection: 'row', flex: 1 }}>
+        <Text 
+          style={{ 
+            color: theme.colors.text,
+            fontFamily: 'AlanSans-SemiBold',
+            fontSize: 18,
+            lineHeight: 24,
+            paddingVertical: 2
+          }}
+        >
+          Olá, 
+        </Text>
+        <Text 
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={{ 
+            color: theme.colors.text,
+            fontFamily: 'AlanSans-SemiBold',
+            fontSize: 18,
+            lineHeight: 24,
+            paddingVertical: 2,
+            flex: 1
+          }}
+        >
           {userData?.name}
         </Text>
       </View>

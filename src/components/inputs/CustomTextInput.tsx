@@ -23,6 +23,7 @@ export const CustomTextInput: React.FC<CustomTextInputProps> = ({
       case '600': return 'AlanSans-SemiBold';
       case '700': return 'AlanSans-Bold';
       case '800': return 'AlanSans-ExtraBold';
+      case '900': return 'AlanSans-Black';
       default: return 'AlanSans-Regular';
     }
   };
@@ -30,34 +31,37 @@ export const CustomTextInput: React.FC<CustomTextInputProps> = ({
   return (
     <PaperTextInput
       {...props}
+      mode="outlined"
       left={icon ? <PaperTextInput.Icon icon={() => icon} /> : undefined}
       contentStyle={{
         fontFamily: getFontFamily(fontWeight),
         color: theme.colors.text,
-        paddingHorizontal: 20,
-        paddingVertical: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        fontSize: 16,
+        lineHeight: 22,
       }}
       style={[
         {
-          backgroundColor: theme.colors.surface,
-          borderRadius: 12,
+          backgroundColor: 'transparent',
           marginVertical: 8,
-          elevation: 2,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
         },
         props.style
       ]}
+      outlineStyle={{
+        borderRadius: 12,
+        borderWidth: 1.5,
+        borderColor: isDark ? theme.colors.border : theme.colors.border,
+      }}
       theme={{
         colors: {
           primary: theme.colors.primary,
           onSurface: theme.colors.text,
-          onSurfaceVariant: theme.colors.text,
-          outline: theme.colors.primary,
-          surface: theme.colors.surface,
-          background: theme.colors.background,
+          onSurfaceVariant: isDark ? theme.colors.secondary : theme.colors.secondary,
+          outline: isDark ? theme.colors.border : theme.colors.border,
+          outlineVariant: isDark ? theme.colors.border : theme.colors.border,
+          surface: 'transparent',
+          background: 'transparent',
         }
       }}
     />

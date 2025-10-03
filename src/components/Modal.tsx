@@ -139,8 +139,13 @@ const TransactionModal = () => {
               </Pressable>
               
               <Text 
-                className="font-alan-bold text-2xl text-center mb-6"
-                style={{ color: theme.colors.text }}
+                style={{ 
+                  color: theme.colors.text,
+                  fontFamily: 'AlanSans-Bold',
+                  fontSize: 24,
+                  textAlign: 'center',
+                  marginBottom: 24
+                }}
               >
                 Nova Transação
               </Text>

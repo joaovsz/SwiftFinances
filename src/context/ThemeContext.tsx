@@ -17,14 +17,16 @@ const lightTheme = {
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
-    background: "#f5f5f5",    // Cinza claro neutro
-    text: "#1f2937",          // Cinza escuro para texto
-    primary: "#3b82f6",       // Azul moderno
-    secondary: "#6b7280",     // Cinza médio
-    accent: "#1d4ed8",        // Azul escuro
-    surface: "#ffffff",       // Branco sólido
-    card: "#ffffff",          // Card branco
-    border: "#e5e7eb",        // Borda cinza suave
+    background: "#f1f5f9",    // Slate 100 - Cinza muito claro
+    text: "#334155",          // Slate 700 - Cinza escuro
+    primary: "#2563eb",       // Blue 600 - Azul principal
+    secondary: "#64748b",     // Slate 500 - Cinza médio
+    accent: "#1e40af",        // Blue 800 - Azul escuro
+    surface: "#ffffff",       // Branco puro
+    card: "#f8fafc",          // Slate 50 - Cinza clarissimo
+    border: "#cbd5e1",        // Slate 300 - Borda cinza
+    headerBg: "#e2e8f0",      // Slate 200 - Header cinza claro
+    tabBar: "#f8fafc",        // Slate 50 - Tab bar cinza
   },
 };
 const darkTheme = {
@@ -33,14 +35,16 @@ const darkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
-    background: "#111827",    // Cinza escuro
-    text: "#f9fafb",          // Branco para texto
-    primary: "#3b82f6",       // Azul moderno
-    secondary: "#6b7280",     // Cinza médio  
-    accent: "#60a5fa",        // Azul claro
-    surface: "#1f2937",       // Cinza escuro sólido
-    card: "#374151",          // Card cinza
-    border: "#4b5563",        // Borda cinza
+    background: "#0f172a",    // Slate 900 - Azul escuro profundo
+    text: "#e2e8f0",          // Slate 200 - Texto claro
+    primary: "#3b82f6",       // Blue 500 - Azul vibrante
+    secondary: "#64748b",     // Slate 500 - Cinza azulado
+    accent: "#60a5fa",        // Blue 400 - Azul claro
+    surface: "#1e293b",       // Slate 800 - Superfície azul escuro
+    card: "#334155",          // Slate 700 - Card azul escuro
+    border: "#475569",        // Slate 600 - Borda azul escuro
+    headerBg: "#1e293b",      // Slate 800 - Header azul escuro
+    tabBar: "#1e293b",        // Slate 800 - Tab bar azul escuro
   },
 };
 export type Theme = typeof lightTheme;

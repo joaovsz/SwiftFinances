@@ -31,11 +31,8 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             minHeight: 64,
             justifyContent: 'center',
             marginVertical: 8,
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
+            borderWidth: 2,
+            borderColor: isDark ? theme.colors.border : theme.colors.border,
           },
           style,
         ]}
@@ -45,7 +42,11 @@ export const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
             fontFamily: 'AlanSans-Regular',
             color: theme.colors.text,
             fontSize: 16,
+            lineHeight: 22,
+            paddingVertical: 2,
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {value ? value.toLocaleDateString('pt-BR') : placeholder}
         </Text>

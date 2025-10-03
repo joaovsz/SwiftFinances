@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useTheme } from '../../context/ThemeContext';
 
 interface CustomButtonProps {
@@ -25,7 +25,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
 
   const getButtonStyle = () => {
     const baseStyle = {
-      borderRadius: 12,
+      borderRadius: 24,
       alignItems: 'center' as const,
       justifyContent: 'center' as const,
       flexDirection: 'row' as const,
@@ -37,9 +37,9 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
     };
 
     const sizeStyles = {
-      small: { paddingVertical: 14, paddingHorizontal: 24 },
-      medium: { paddingVertical: 18, paddingHorizontal: 32 },
-      large: { paddingVertical: 22, paddingHorizontal: 40 },
+      small: { paddingVertical: 16, paddingHorizontal: 24, minHeight: 44 },
+      medium: { paddingVertical: 20, paddingHorizontal: 32, minHeight: 50 },
+      large: { paddingVertical: 24, paddingHorizontal: 40, minHeight: 56 },
     };
 
     const variantStyles = {
@@ -79,8 +79,10 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
 
   const getTextStyle = () => {
     const baseTextStyle = {
-      fontFamily: 'AlanSans-SemiBold', // 600 weight
+      fontFamily: 'AlanSans-SemiBold', // Using specific font file
       fontSize: size === 'small' ? 14 : size === 'large' ? 18 : 16,
+      lineHeight: size === 'small' ? 20 : size === 'large' ? 24 : 22,
+      paddingVertical: 1,
     };
 
     if (disabled) {
@@ -110,7 +112,13 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         {icon && icon}
-        <Text style={getTextStyle()}>{title}</Text>
+        <Text 
+          style={getTextStyle()}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title}
+        </Text>
       </View>
     </Pressable>
   );

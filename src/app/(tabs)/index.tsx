@@ -32,9 +32,15 @@ export default function Home() {
         <HeaderUser />
         
         <Text
-          className={`${
-            !isDark ? "text-black" : "text-white"
-          } font-alan-semibold text-[24px] text-left mb-4`}
+          className={`ml-2 ${
+            !isDark ? "text-slate-600" : "text-white"
+          } text-left`}
+          style={{
+            fontFamily: 'AlanSans-Regular',
+            fontSize: 24,
+            lineHeight: 32,
+            paddingVertical: 4,
+          }}
         >
           Resumo Financeiro
         </Text>
@@ -46,83 +52,144 @@ export default function Home() {
             flexDirection: "row",
             height: 90,
           }}
-          className="flex-row gap-4 max-h-[150px]"
+          className="flex-row gap-4 max-h-[160px]"
         >
+          {/* Card Principal - Saldo */}
           <View
-            className="p-6 w-[320px] items-left h-full justify-around rounded-2xl mr-4"
             style={{
               backgroundColor: theme.colors.surface,
-              elevation: 4,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
+              borderRadius: 16,
+              padding: 20,
+              width: 280,
+              marginRight: 16,
+              
               shadowRadius: 8,
+              justifyContent: 'space-around',
             }}
           >
-            <View className="flex flex-row gap-2 w-1/2 items-center max-h-[150px]">
-              <TotalIcon />
-              <Text className={`${isDark ? 'text-white' : 'text-gray-800'} font-alan-regular text-2xl`}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, }}>
+              <TotalIcon color={theme.colors.text} />
+              <Text 
+                style={{ 
+                  color: theme.colors.text,
+                  fontFamily: 'AlanSans-Regular',
+                  fontSize: 28,
+                  lineHeight: 36,
+                  paddingVertical: 2
+                }}
+              >
                 Saldo
               </Text>
             </View>
-            <Text className={`${isDark ? 'text-blue-400' : 'text-blue-600'} text-left font-alan-semibold text-3xl w-full`}>
+            <Text 
+              style={{ 
+                color: theme.colors.primary,
+                fontFamily: 'AlanSans-ExtraBold',
+                fontSize: 33,
+                lineHeight: 40,
+                paddingVertical: 2
+              }}
+            >
               {formatToBRL(totalAmount)}
             </Text>
           </View>
 
-          <View className="gap-4 h-full" style={{ height: 90 }}>
+          <View style={{ gap: 16, height: 90 }}>
             <View
-              className="p-4 w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4"
               style={{
                 backgroundColor: theme.colors.surface,
-                elevation: 3,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.08,
-                shadowRadius: 6,
+                borderRadius: 16,
+                padding: 16,
+                width: 280,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                
               }}
             >
-              <View className="flex flex-row w-1/2 gap-2 items-center">
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
                 <IncomeIcon />
-                <Text className={`${isDark ? 'text-blue-200' : 'text-blue-700'} text-xl font-alan-regular`}>
+                <Text 
+                  style={{ 
+                    color: theme.colors.text,
+                    fontFamily: 'AlanSans-SemiBold',
+                    fontSize: 18,
+                    lineHeight: 24,
+                    paddingVertical: 2
+                  }}
+                >
                   Entradas
                 </Text>
               </View>
               <Text
-                className={`${isDark ? 'text-white' : 'text-gray-800'} font-alan-semibold w-1/2 text-right text-xl`}
+                style={{ 
+                  color: isDark ? '#22c55e' : '#16a34a',
+                  fontFamily: 'AlanSans-Bold',
+                  fontSize: 18,
+                  lineHeight: 24,
+                  paddingVertical: 2
+                }}
               >
                 {formatToBRL(incomes)}
               </Text>
             </View>
+            
             <View
-              className="p-4 w-[320px] flex flex-row items-center justify-between h-[68px] rounded-2xl mr-4"
               style={{
                 backgroundColor: theme.colors.surface,
-                elevation: 3,
+                borderRadius: 16,
+                padding: 16,
+                width: 280,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                elevation: isDark ? 3 : 1,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.08,
-                shadowRadius: 6,
+                shadowOpacity: isDark ? 0.2 : 0.05,
+                shadowRadius: 4,
               }}
             >
-              <View className="flex flex-row w-1/2 gap-2 items-center">
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
                 <ExpensesIcon />
-                <Text className={`${isDark ? 'text-red-200' : 'text-red-700'} text-xl font-alan-regular`}>
+                <Text 
+                  style={{ 
+                    color: theme.colors.text,
+                    fontFamily: 'AlanSans-SemiBold',
+                    fontSize: 18,
+                    lineHeight: 24,
+                    paddingVertical: 2
+                  }}
+                >
                   Saídas
                 </Text>
               </View>
-              <Text className="text-red-500 font-alan-semibold w-1/2 text-right text-xl">
+              <Text 
+                style={{ 
+                  color: isDark ? '#ef4444' : '#dc2626',
+                  fontFamily: 'AlanSans-Bold',
+                  fontSize: 18,
+                  lineHeight: 24,
+                  paddingVertical: 2
+                }}
+              >
                 - {formatToBRL(expenses)}
               </Text>
             </View>
           </View>
         </ScrollView>
         
-        <View className="flex flex-row items-center justify-between w-full mb-4">
+        <View className="flex flex-row items-center justify-between w-full ml-2">
           <Text
             className={`${
-              !isDark ? "text-black" : "text-white"
-            } text-[20px] font-alan-bold w-1/2 text-left`}
+              !isDark ? "text-slate-600" : "text-white"
+            } text-left`}
+            style={{
+              fontFamily: 'AlanSans-Bold',
+              fontSize: 20,
+              lineHeight: 28,
+              paddingVertical: 4,
+            }}
           >
             Transações Recentes
           </Text>

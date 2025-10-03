@@ -32,8 +32,8 @@ export const CustomCategorySelector: React.FC<CustomCategorySelectorProps> = ({
             style={{
               flex: 1,
               padding: 20,
-              borderWidth: isSelected ? 2 : 0,
-              borderColor: isSelected ? theme.colors.primary : 'transparent',
+              borderWidth: 2,
+              borderColor: isSelected ? theme.colors.primary : '#e2e8f0',
               borderRadius: 12,
               backgroundColor: isSelected 
                 ? theme.colors.primary + '20'  // 20% opacity
@@ -42,11 +42,6 @@ export const CustomCategorySelector: React.FC<CustomCategorySelectorProps> = ({
               justifyContent: 'center',
               minHeight: 64,
               marginVertical: 8,
-              elevation: isSelected ? 4 : 2,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: isSelected ? 2 : 1 },
-              shadowOpacity: 0.1,
-              shadowRadius: isSelected ? 6 : 3,
             }}
             onPress={() => onValueChange(option.value)}
           >
@@ -55,7 +50,12 @@ export const CustomCategorySelector: React.FC<CustomCategorySelectorProps> = ({
                 fontFamily: isSelected ? 'AlanSans-SemiBold' : 'AlanSans-Regular',
                 color: isSelected ? theme.colors.primary : theme.colors.text,
                 fontSize: 16,
+                lineHeight: 22,
+                paddingVertical: 2,
+                textAlign: 'center',
               }}
+              numberOfLines={1}
+              ellipsizeMode="tail"
             >
               {option.label}
             </Text>

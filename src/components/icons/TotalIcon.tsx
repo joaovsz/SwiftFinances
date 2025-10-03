@@ -1,11 +1,11 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
 
-function TotalIcon() {
+function TotalIcon({color}: { color: string } = { color: "#fff" }) {
   return (
     <Svg width="32" height="32" fill="none" viewBox="0 0 32 32">
       <Path
-        stroke="#fff"
+        stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
