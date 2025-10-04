@@ -11,11 +11,9 @@ export function NotificationTestScreen() {
 
   const runPresetTests = () => {
     try {
-      console.log('Executando testes pré-definidos...');
       const testCount = NotificationTester.testBankMessages();
       setResults(`✅ Executados ${testCount} testes. Verifique o console para detalhes.`);
     } catch (error) {
-      console.error('Erro ao executar testes:', error);
       setResults(`❌ Erro ao executar testes: ${error}`);
     }
   };
@@ -27,7 +25,6 @@ export function NotificationTestScreen() {
     }
 
     try {
-      console.log('Testando mensagem personalizada...');
       const result = await NotificationTester.testCustomMessage(title, body, appId);
       
       if (result) {
@@ -42,7 +39,6 @@ export function NotificationTestScreen() {
         setResults('❌ Mensagem não reconhecida como transação bancária');
       }
     } catch (error) {
-      console.error('Erro ao testar mensagem:', error);
       setResults(`❌ Erro: ${error}`);
     }
   };
@@ -54,7 +50,6 @@ export function NotificationTestScreen() {
     }
 
     try {
-      console.log('Simulando notificação completa...');
       const result = await NotificationTester.simulateNotification(title, body, appId);
       
       if (result) {
@@ -76,7 +71,6 @@ export function NotificationTestScreen() {
         setResults('❌ Simulação falhou - mensagem não reconhecida');
       }
     } catch (error) {
-      console.error('Erro na simulação:', error);
       setResults(`❌ Erro na simulação: ${error}`);
     }
   };

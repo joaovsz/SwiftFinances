@@ -108,7 +108,7 @@ export default function Home() {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
-                <IncomeIcon />
+                <IncomeIcon color={isDark ? '#22c55e' : '#16a34a'} />
                 <Text 
                   style={{ 
                     color: theme.colors.text,
@@ -147,7 +147,7 @@ export default function Home() {
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
-                <ExpensesIcon />
+                <ExpensesIcon color={isDark ? '#ef4444' : '#dc2626'} />
                 <Text 
                   style={{ 
                     color: theme.colors.text,

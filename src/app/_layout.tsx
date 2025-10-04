@@ -10,6 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FinancesProvider } from "../context/FinancesProvider";
 import { ThemeContextProvider } from "../context/ThemeContext";
 import { AuthProvider } from "../context/AuthContext";
+import { PaperProvider } from "react-native-paper";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,29 +37,31 @@ export default function HomeLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeContextProvider>
-        <AuthProvider>
-          <FinancesProvider>
-          <Stack
-            initialRouteName="/(tabs)"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen
-              name="(tabs)"
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen name="Login" />
-            <Stack.Screen name="Signup" />
-          </Stack>
-            <Toast />
-          </FinancesProvider>
-        </AuthProvider>
-      </ThemeContextProvider>
-    </GestureHandlerRootView>
+    <PaperProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ThemeContextProvider>
+          <AuthProvider>
+            <FinancesProvider>
+              <Stack
+                initialRouteName="/(tabs)"
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                <Stack.Screen
+                  name="(tabs)"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen name="Login" />
+                <Stack.Screen name="Signup" />
+              </Stack>
+              <Toast />
+            </FinancesProvider>
+          </AuthProvider>
+        </ThemeContextProvider>
+      </GestureHandlerRootView>
+    </PaperProvider>
   );
 }

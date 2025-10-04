@@ -31,15 +31,22 @@ const Row: React.FC<RowProps> = ({
   
   // Animação para o swipe
   const translateX = new Animated.Value(0);
+  const borderRadius = new Animated.Value(16); // Controla o borderRadius
   const screenWidth = Dimensions.get('window').width;
   const actionWidth = 140; // Largura das ações (70px cada botão)
 
   function removeTransactions(transaction: Transaction) {
     // Fechar swipe antes de remover
-    Animated.spring(translateX, {
-      toValue: 0,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.spring(translateX, {
+        toValue: 0,
+        useNativeDriver: false,
+      }),
+      Animated.spring(borderRadius, {
+        toValue: 16,
+        useNativeDriver: false,
+      })
+    ]).start();
     
     removeTransaction(transaction.id);
     const forRemove = {
@@ -51,7 +58,16 @@ const Row: React.FC<RowProps> = ({
 
   const onGestureEvent = Animated.event(
     [{ nativeEvent: { translationX: translateX } }],
-    { useNativeDriver: true }
+    { 
+      useNativeDriver: false, // Precisa ser false para animar borderRadius
+      listener: (event: any) => {
+        const { translationX } = event.nativeEvent;
+        // Animar borderRadius baseado na posição do swipe
+        const progress = Math.min(Math.abs(translationX) / 50, 1);
+        const newRadius = 16 * (1 - progress);
+        borderRadius.setValue(newRadius);
+      }
+    }
   );
 
   const onHandlerStateChange = (event: any) => {
@@ -60,16 +76,28 @@ const Row: React.FC<RowProps> = ({
       
       // Se deslizou para a esquerda mais de 50px, mostrar ações
       if (translationX < -50) {
-        Animated.spring(translateX, {
-          toValue: -actionWidth,
-          useNativeDriver: true,
-        }).start();
+        Animated.parallel([
+          Animated.spring(translateX, {
+            toValue: -actionWidth,
+            useNativeDriver: false,
+          }),
+          Animated.spring(borderRadius, {
+            toValue: 0, // Remove borderRadius do lado direito
+            useNativeDriver: false,
+          })
+        ]).start();
       } else {
         // Voltar para posição original
-        Animated.spring(translateX, {
-          toValue: 0,
-          useNativeDriver: true,
-        }).start();
+        Animated.parallel([
+          Animated.spring(translateX, {
+            toValue: 0,
+            useNativeDriver: false,
+          }),
+          Animated.spring(borderRadius, {
+            toValue: 16, // Restaura borderRadius completo
+            useNativeDriver: false,
+          })
+        ]).start();
       }
     }
   };
@@ -125,14 +153,20 @@ const Row: React.FC<RowProps> = ({
           flexDirection: 'row',
         }}>
           {/* Botão Editar */}
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               setShowEditModal(true);
               // Fechar swipe após pressionar
-              Animated.spring(translateX, {
-                toValue: 0,
-                useNativeDriver: true,
-              }).start();
+              Animated.parallel([
+                Animated.spring(translateX, {
+                  toValue: 0,
+                  useNativeDriver: false,
+                }),
+                Animated.spring(borderRadius, {
+                  toValue: 16,
+                  useNativeDriver: false,
+                })
+              ]).start();
             }}
             style={{
               flex: 1,
@@ -143,10 +177,9 @@ const Row: React.FC<RowProps> = ({
           >
             <PencilIcon size={20} color="white" />
             <Text style={{ color: 'white', fontSize: 10, marginTop: 2 }}>Editar</Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          {/* Botão Excluir */}
-          <TouchableOpacity
+          <Pressable
             onPress={() => removeTransactions(transaction)}
             style={{
               flex: 1,
@@ -157,13 +190,13 @@ const Row: React.FC<RowProps> = ({
           >
             <TrashIcon size={20} color="white" />
             <Text style={{ color: 'white', fontSize: 10, marginTop: 2 }}>Excluir</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Conteúdo principal com swipe */}
         <PanGestureHandler
           onGestureEvent={onGestureEvent}
-          onHandlerStateChange={onHandlerStateChange}
+                    onHandlerStateChange={onHandlerStateChange}
           activeOffsetX={[-10, 10]}
         >
           <Animated.View
@@ -171,12 +204,10 @@ const Row: React.FC<RowProps> = ({
               transform: [{ translateX }],
             }}
           >
-            <TouchableOpacity
+            <Pressable
               onPress={onPress}
-              style={{
-                backgroundColor: theme.colors.card,
-                borderRadius: 16,
-                padding: 16,
+              style={({ pressed }) => ({
+                
                 elevation: isDark ? 3 : 1,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 1 },
@@ -184,10 +215,15 @@ const Row: React.FC<RowProps> = ({
                 shadowRadius: 4,
                 borderWidth: isDark ? 0 : 1,
                 borderColor: isDark ? 'transparent' : theme.colors.border,
-              }}
+              })}
             >
               {/* Linha principal com título e valor */}
-              <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 8 }}>
+              <Animated.View style={{
+                flexDirection: 'row', alignItems: 'flex-start', gap: 8,
+                backgroundColor: theme.colors.card,
+                borderRadius: borderRadius,
+                padding: 16,
+               }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, gap: 8 }}>
                   {transaction.isAutomatic && (
                     <BellIcon size={16} color={theme.colors.primary} />
@@ -208,7 +244,6 @@ const Row: React.FC<RowProps> = ({
                       )}
                     </Text>
                     
-                    {/* Data e hora */}
                     <Text 
                       style={{ 
                         color: theme.colors.text + '80',
@@ -222,36 +257,41 @@ const Row: React.FC<RowProps> = ({
                       {transaction.category && ` • ${transaction.category}`}
                     </Text>
                   </View>
+                  
                 </View>
                 
-                <Text
-                  style={{
-                    color: type == 1 ? (isDark ? '#22c55e' : '#16a34a') : (isDark ? '#ef4444' : '#dc2626'),
-                    fontSize: 16,
-                    lineHeight: 20,
-                    fontFamily: 'AlanSans-Bold',
-                    textAlign: 'right'
-                  }}
-                >
-                  {formatToBRL(value)}
-                </Text>
-              </View>
-
-              {/* Indicador de swipe */}
-              <View style={{ 
-                alignItems: 'center', 
-                marginTop: 8,
-                opacity: 0.5 
-              }}>
-                <Text style={{ 
-                  fontSize: 10, 
-                  color: theme.colors.text + '60',
-                  fontStyle: 'italic'
-                }}>
-                  ← Deslize para opções
-                </Text>
-              </View>
-            </TouchableOpacity>
+                <View>
+                  <Text
+                    style={{
+                      color: type == 1 ? (isDark ? '#22c55e' : '#16a34a') : (isDark ? '#ef4444' : '#dc2626'),
+                      fontSize: 16,
+                      lineHeight: 20,
+                      fontFamily: 'AlanSans-Bold',
+                      textAlign: 'right'
+                    }}
+                  >
+                    {formatToBRL(value)}
+                  </Text>
+                  
+                  <View style={{ 
+                    alignItems: 'center', 
+                    marginTop: 8,
+                    opacity: 0.5 
+                  }}>
+                    <Text style={{ 
+                      fontSize: 10, 
+                      color: theme.colors.text + '60',
+                      fontStyle: 'italic'
+                    }}>
+                      ← Deslize para opções
+                    </Text>
+                  </View>
+                </View>
+                
+              </Animated.View>
+              
+            </Pressable>
+            
           </Animated.View>
         </PanGestureHandler>
       </View>
@@ -260,7 +300,6 @@ const Row: React.FC<RowProps> = ({
         visible={showEditModal}
         onClose={() => setShowEditModal(false)}
         transaction={transaction}
-        isNewTransaction={false}
       />
     </>
   );

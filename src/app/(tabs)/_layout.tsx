@@ -18,7 +18,6 @@ import { router } from "expo-router";
 import { ProfileModalProvider, useProfileModal } from "@/src/context/ProfileModalContext";
 import { ProfileModal } from "@/src/components/ProfileModal";
 import { EditTransactionModal } from "@/src/components/EditTransactionModal";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 export const EmptyScreen = () => <></>;
@@ -30,7 +29,7 @@ const ThemedTabNavigator = () => {
   const [showNewTransactionModal, setShowNewTransactionModal] = useState(false);
   
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <>
       <Tab.Navigator
       screenOptions={() => ({
         tabBarShowLabel: false,
@@ -145,9 +144,8 @@ const ThemedTabNavigator = () => {
       <EditTransactionModal
         visible={showNewTransactionModal}
         onClose={() => setShowNewTransactionModal(false)}
-        isNewTransaction={true}
       />
-    </GestureHandlerRootView>
+    </>
   );
 };
 
