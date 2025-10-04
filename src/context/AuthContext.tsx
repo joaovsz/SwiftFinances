@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "@/firebaseConfig";
 import { onAuthStateChanged, User } from "firebase/auth";
 import React from "react";
-import Storage from "expo-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Usuario } from "../models/User";
 import { getUsuarioById } from "@/firebase/Services/createServices";
 interface AuthContextType {
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: any) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedUser = await Storage.getItem({ key: "auth" });
+      const storedUser = await AsyncStorage.getItem("auth");
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
@@ -37,12 +37,12 @@ export const AuthProvider = ({ children }: any) => {
       setUser(user);
       setLoading(false);
       if (user) {
-        Storage.setItem({
-          key: "auth",
-          value: JSON.stringify(user),
-        });
+        AsyncStorage.setItem(
+          "auth",
+          JSON.stringify({ uid: user.uid, email: user.email })
+        );
       } else {
-        Storage.removeItem({ key: "auth" });
+        AsyncStorage.removeItem("auth");
         setUserData(null);
       }
     });
