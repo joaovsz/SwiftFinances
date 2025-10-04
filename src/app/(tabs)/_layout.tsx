@@ -1,6 +1,6 @@
 import { useFinances } from "@/src/context/FinancesContext";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AdjustmentsHorizontalIcon,
   Cog8ToothIcon,
@@ -17,6 +17,8 @@ import { useAuth } from "@/src/context/AuthContext";
 import { router } from "expo-router";
 import { ProfileModalProvider, useProfileModal } from "@/src/context/ProfileModalContext";
 import { ProfileModal } from "@/src/components/ProfileModal";
+import { EditTransactionModal } from "@/src/components/EditTransactionModal";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 export const EmptyScreen = () => <></>;
@@ -25,9 +27,11 @@ export const EmptyScreen = () => <></>;
 const ThemedTabNavigator = () => {
   const { setOpenAddTransactionModal } = useFinances();
   const { theme, isDark } = useTheme();
+  const [showNewTransactionModal, setShowNewTransactionModal] = useState(false);
   
   return (
-    <Tab.Navigator
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tab.Navigator
       screenOptions={() => ({
         tabBarShowLabel: false,
         tabBarActiveTintColor: theme.colors.primary,
@@ -79,7 +83,7 @@ const ThemedTabNavigator = () => {
           headerShown: false,
           tabBarButton: () => (
             <Pressable
-              onPress={() => setOpenAddTransactionModal(true)}
+              onPress={() => setShowNewTransactionModal(true)}
               style={{
                 backgroundColor: theme.colors.primary,
                 borderRadius: 32,
@@ -137,6 +141,13 @@ const ThemedTabNavigator = () => {
         }}
       />
     </Tab.Navigator>
+    
+      <EditTransactionModal
+        visible={showNewTransactionModal}
+        onClose={() => setShowNewTransactionModal(false)}
+        isNewTransaction={true}
+      />
+    </GestureHandlerRootView>
   );
 };
 

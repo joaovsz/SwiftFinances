@@ -5,6 +5,7 @@ import * as Font from 'expo-font';
 import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { FinancesProvider } from "../context/FinancesProvider";
 import { ThemeContextProvider } from "../context/ThemeContext";
@@ -35,9 +36,10 @@ export default function HomeLayout() {
   }
 
   return (
-    <ThemeContextProvider>
-      <AuthProvider>
-        <FinancesProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeContextProvider>
+        <AuthProvider>
+          <FinancesProvider>
           <Stack
             initialRouteName="/(tabs)"
             screenOptions={{
@@ -53,9 +55,10 @@ export default function HomeLayout() {
             <Stack.Screen name="Login" />
             <Stack.Screen name="Signup" />
           </Stack>
-          <Toast />
-        </FinancesProvider>
-      </AuthProvider>
-    </ThemeContextProvider>
+            <Toast />
+          </FinancesProvider>
+        </AuthProvider>
+      </ThemeContextProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -33,6 +33,7 @@ export type FinancesContextType = {
   calculateTotal: () => void;
   setOpenAddTransactionModal: Dispatch<React.SetStateAction<boolean>>;
   minusTransaction: (transaction: any) => void;
+  updateTransaction: (transaction: Transaction) => Promise<void>;
 };
 const FinancesContext = createContext<FinancesContextType | undefined>(
   undefined
