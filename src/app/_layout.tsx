@@ -3,7 +3,7 @@ import "../global.css";
 import { useFonts } from "expo-font";
 import * as Font from 'expo-font';
 import { SplashScreen, Stack } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Toast from "react-native-toast-message";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 

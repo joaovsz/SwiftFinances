@@ -148,7 +148,7 @@ export default function Login() {
             size="large"
             style={{ 
               marginTop: 20,
-              borderRadius: 16,
+              borderRadius: 24,
               paddingVertical: 16,
             }}
           />
